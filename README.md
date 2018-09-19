@@ -16,5 +16,7 @@ This program requires the Quantum.m package by Carlos Pineda (carlospgmat03):
 https://github.com/carlospgmat03/libs
 
    Usage examples:
+   
    ./RandomExtremalPOVMs.wl --Samplings 100 --HilbertDim 6 --Outcomedim 8 --Temperature 1*^-4
+   
    ./RandomExtremalPOVMs.wl -o Qubit --EtaAngle 3.1416
