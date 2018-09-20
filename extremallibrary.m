@@ -1,5 +1,5 @@
 BeginPackage["extremallibrary`"]
-Get["~/Software/Mathematica/libs/Quantum.m"]
+Needs["Quantum`"]
 
 Coherent::usage = "Defines a finite approximation to a coherent state. Requires a complex number as first input and an
 integer for the dimension to use."
