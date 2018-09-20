@@ -1,5 +1,5 @@
-(*
-RANDOM SAMPLING OF EXTREMAL POVMS.
+#!/usr/bin/env wolframscript 
+(* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
 algorithm for maximizing the Van Trees Information.  The system at hand is
@@ -11,8 +11,8 @@ This implementation was done by Esteban Martínez Vargas 2017-18: Esteban.Martin
 
 *)
 
-(* Change the path to the Mathematica command, for UNIX-related systems the path normally is the following:*)
-#!/usr/bin/env wolframscript 
+(* Change the path to the Mathematica command, for UNIX-related systems the path normally is the following:
+#!/usr/bin/env wolframscript *)
 
 Needs["extremallibrary`"]
 
