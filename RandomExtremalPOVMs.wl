@@ -33,6 +33,7 @@ Needs["Quantum`"]
 convergence and the other has to do with finding a Linear Program solution. Neither of them affect directly the result. 
 *)
 Off[NIntegrate::ncvb]
+Off[NIntegrate::slwcon]
 (*Defaults {{{*)
 {option = "CohPlusTher", Samplings = 150, MeanPhotonNumb = 1, Temperature = 1*^-3, MixConstant = 0.5, EtaAngle = \[Pi]/2, 
 HilbertDim = 7, Outcomedim = 10, WriteDirectory = "."}
@@ -202,11 +203,14 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
          VanTrees = Max[VT];];] AppendTo[maximalist, VanTrees];
       (*Sampling number view.*)
       
-      Export["./kappa_samplingnum.dat", \[Kappa]];, {\[Kappa], 
+      (*Export["./kappa_samplingnum.dat", \[Kappa]];*)
+      PrintTemporary[\[Kappa]];
+      , {\[Kappa], 
        Samplings}];][[1]] >>> 
   "./tiemposCoherentplusthermalExtremales.dat";
   (*}}}*)
 PutAppend[Max[maximalist], WriteDirectory<>"/VanCohplusthervalues.dat"]; (*This file contains the Maximum value of the Van Trees Information found.*)
+  Print["Max{Van Trees} = ",Max[maximalist]];
   ,
   "Qubit",
 (* Initialize lists {{{*)
@@ -217,13 +221,13 @@ Optimal = {};
 (*}}}*) 
 (*{{{*)   
    Timing[Do[VT = {};
-      prob = 0;
+      prob = 1;
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-      While[Abs[1 - prob] > 1*^-4,
+      While[prob > 1*^-4,
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         A = {};
         vectA = {};
@@ -257,9 +261,9 @@ Optimal = {};
         We find the optimum with a random vector, therefore, 
         it is a random element of the polytope.*)
         
-        Check[Sol = 
+        Quiet[Check[Sol = 
           LinearProgramming[RandV, A, bprime, Method -> "Simplex"],
-         Break[]];
+         Break[]]];
         
         (*With the result of the Linear Program we construct the extremal POVM.*)
         ExtPOVM = {};
