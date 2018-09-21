@@ -28,6 +28,11 @@ Needs["Quantum`"]
    ./RandomExtremalPOVMs.wl -o Qubit --EtaAngle 3.1416
 
 *)
+
+(* NOTE This program gives 2 warnings that I have not been able to eliminate. One is for Integral 
+convergence and the other has to do with finding a Linear Program solution. Neither of them affect directly the result. 
+*)
+Off[NIntegrate::ncvb]
 (*Defaults {{{*)
 {option = "CohPlusTher", Samplings = 150, MeanPhotonNumb = 1, Temperature = 1*^-3, MixConstant = 0.5, EtaAngle = \[Pi]/2, 
 HilbertDim = 7, Outcomedim = 10, WriteDirectory = "."}
@@ -79,7 +84,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
       H = CUEMember[Outcomedim*(HilbertDim)];
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-      While[Abs[1 - prob] > 1*^-4,
+      While[Abs[1 - prob] > 1*^-3,
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         A = {};
         vectA = {};
@@ -113,9 +118,9 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
         We find the optimum with a random vector, therefore, 
         it is a random element of the polytope.*)
         
-        Check[Sol = 
+        Quiet[Check[Sol = 
           LinearProgramming[RandV, A, bprime, Method -> "Simplex"],
-         Break[]];
+         Break[]]];
         
         (*With the result of the Linear Program we construct the extremal POVM.*)
         ExtPOVM = {};
@@ -159,7 +164,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
            avector[[\[Sigma]]]/Sol[[\[Sigma]]]], {\[Sigma], 1, 
            Length[avector]}];
         prob = Min[Select[ListaCocientes, # > 0. &]];
-        If[Chop[Abs[1. - prob], 10^-9] == 0, Break[], 
+        If[Chop[Abs[1. - prob], 10^-5] == 0, Break[], 
          SolAux = (1./(1. - prob))*(avector - prob*Sol);];
         
         otroPOVM = {};
@@ -200,7 +205,8 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
   "./tiemposCoherentplusthermalExtremales.dat";
   (*}}}*)
 PutAppend[Max[maximalist], WriteDirectory<>"/VanCohplusthervalues.dat"]; (*This file contains the Maximum value of the Van Trees Information found.*)
-   ,
+ Print["Done, the solution is at the end of ", WriteDirectory<>"/VanCohplusthervalues.dat"] 
+  ,
   "Qubit",
 (* Initialize lists {{{*)
 vanmuchos = {};
