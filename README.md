@@ -20,3 +20,5 @@ https://github.com/carlospgmat03/libs
    ./RandomExtremalPOVMs.wl --Samplings 100 --HilbertDim 6 --Outcomedim 8 --Temperature 1*^-4
    
    ./RandomExtremalPOVMs.wl -o Qubit --EtaAngle 3.1416
+
+The program will print the solution to the end of a new file in the Writing Directory.

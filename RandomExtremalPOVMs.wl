@@ -78,13 +78,13 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
 (*}}}*)
 (*{{{*)   
    Timing[Do[VT = {};
-      prob = 0;
+      prob = 1;
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-      While[Abs[1 - prob] > 1*^-3,
+      While[prob > 1*^-3,
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         A = {};
         vectA = {};
@@ -117,6 +117,8 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
         (*Linear Programming to find a solution. 
         We find the optimum with a random vector, therefore, 
         it is a random element of the polytope.*)
+        (* Print[Abs[1-prob]];
+         Print[MatrixRank[A]]; *)
         
         Quiet[Check[Sol = 
           LinearProgramming[RandV, A, bprime, Method -> "Simplex"],
@@ -205,7 +207,6 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
   "./tiemposCoherentplusthermalExtremales.dat";
   (*}}}*)
 PutAppend[Max[maximalist], WriteDirectory<>"/VanCohplusthervalues.dat"]; (*This file contains the Maximum value of the Van Trees Information found.*)
- Print["Done, the solution is at the end of ", WriteDirectory<>"/VanCohplusthervalues.dat"] 
   ,
   "Qubit",
 (* Initialize lists {{{*)
