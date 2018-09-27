@@ -206,10 +206,10 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
       (*Export["./kappa_samplingnum.dat", \[Kappa]];*)
       PrintTemporary[\[Kappa]];
       , {\[Kappa], 
-       Samplings}];][[1]] >>> 
-  "./tiemposCoherentplusthermalExtremales.dat";
+       Samplings}];][[1]] (*>>> 
+  "./tiemposCoherentplusthermalExtremales.dat";*)
   (*}}}*)
-PutAppend[Max[maximalist], WriteDirectory<>"/VanCohplusthervalues.dat"]; (*This file contains the Maximum value of the Van Trees Information found.*)
+(*PutAppend[Max[maximalist], WriteDirectory<>"/VanCohplusthervalues.dat"];*) (*This file contains the Maximum value of the Van Trees Information found.*)
   Print["Max{Van Trees} = ",Max[maximalist]];
   ,
   "Qubit",
@@ -221,6 +221,7 @@ Optimal = {};
 (*Here, the Dimensions have to be fixed. *)
 HilbertDim = 2;
 Outcomedim = 4;
+Off[Infinity::indet];
 (*}}}*) 
 (*{{{*)   
    Timing[Do[VT = {};
@@ -310,8 +311,7 @@ Outcomedim = 4;
            avector[[\[Sigma]]]/Sol[[\[Sigma]]]], {\[Sigma], 1, 
            Length[avector]}];
         prob = Min[Select[ListaCocientes, # > 0. &]];
-        Quiet[Infinity::indet]
-        If[Chop[Abs[1. - prob], 10^-9] == 0, Break[], 
+        If[Chop[Abs[1. - prob], 10^-9] == 0,Break[], 
          SolAux = (1./(1. - prob))*(avector - prob*Sol);];
         
         otroPOVM = {};
@@ -345,11 +345,12 @@ in this iteration.*)
          VanTrees = Max[VT];];] AppendTo[maximalist, VanTrees];
       (*Sampling number view.*)
       
-      Export["./kappa_samplingnum.dat", \[Kappa]];, {\[Kappa], 
-       Samplings}];][[1]] >>> 
-  "./tiemposCoherentplusthermalExtremales.dat";
+      (*Export["./kappa_samplingnum.dat", \[Kappa]];*)
+      , {\[Kappa], 
+       Samplings}];][[1]] (*>>> 
+  "./tiemposCoherentplusthermalExtremales.dat";*)
   (*}}}*)
-PutAppend[Max[maximalist], WriteDirectory<>"/VanQubitvalues.dat"]; (*This file contains the Maximum value of the Van Trees Information found.*)
+(*PutAppend[Max[maximalist], WriteDirectory<>"/VanQubitvalues.dat"];*) (*This file contains the Maximum value of the Van Trees Information found.*)
   Print["Max{Van Trees} = ",Max[maximalist]];
     ,
   _,
