@@ -35,7 +35,7 @@ convergence and the other has to do with finding a Linear Program solution. Neit
 Off[NIntegrate::ncvb]
 Off[NIntegrate::slwcon]
 (*Defaults {{{*)
-{option = "CohPlusTher", Samplings = 150, MeanPhotonNumb = 1, Temperature = 1*^-3, MixConstant = 0.5, EtaAngle = \[Pi]/2, 
+{option = "CohPlusTher", Samplings = 150, MeanPhotonNumb = 0.5, Temperature = 1*^-3, MixConstant = 0.5, EtaAngle = \[Pi]/2, 
 HilbertDim = 7, Outcomedim = 10, WriteDirectory = "."}
 (*}}}*)
 (*Flags {{{*)
@@ -79,13 +79,13 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
 (*}}}*)
 (*{{{*)   
    Timing[Do[VT = {};
-      prob = 1;
+      prob = 0;
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-      While[prob > 1*^-3,
+      While[prob < 1.,
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         A = {};
         vectA = {};
@@ -218,16 +218,19 @@ vanmuchos = {};
 maximalist = {};
 ListaCocientes = {};
 Optimal = {};
+(*Here, the Dimensions have to be fixed. *)
+HilbertDim = 2;
+Outcomedim = 4;
 (*}}}*) 
 (*{{{*)   
    Timing[Do[VT = {};
-      prob = 1;
+      prob = 0;
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-      While[prob > 1*^-4,
+      While[prob < 1.,
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         A = {};
         vectA = {};
@@ -307,6 +310,7 @@ Optimal = {};
            avector[[\[Sigma]]]/Sol[[\[Sigma]]]], {\[Sigma], 1, 
            Length[avector]}];
         prob = Min[Select[ListaCocientes, # > 0. &]];
+        Quiet[Infinity::indet]
         If[Chop[Abs[1. - prob], 10^-9] == 0, Break[], 
          SolAux = (1./(1. - prob))*(avector - prob*Sol);];
         
@@ -333,7 +337,7 @@ Optimal = {};
         (*We calculate the Van Trees Information with the POVM found \
 in this iteration.*)
         
-        AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+       AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
         
         ranks = Table[
           MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
@@ -346,6 +350,7 @@ in this iteration.*)
   "./tiemposCoherentplusthermalExtremales.dat";
   (*}}}*)
 PutAppend[Max[maximalist], WriteDirectory<>"/VanQubitvalues.dat"]; (*This file contains the Maximum value of the Van Trees Information found.*)
+  Print["Max{Van Trees} = ",Max[maximalist]];
     ,
   _,
     Print["Option \"", option, "\" not found"]

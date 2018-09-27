@@ -79,7 +79,7 @@ Module[{DerivativeVar},D[Tr[CoherentPlusThermalState[HilbertDim -1, DerivativeVa
 FisherCoherentPlusTher[Extremal_,ThetaPhase_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_,MixConstant_] :=
 Sum[((PderivCoherentPlusTher[Extremal,ThetaPhase, Iterator, ComplexCoherent,HilbertDim,FieldFrequency,Temperature,MixConstant])^2)/Tr[CoherentPlusThermalState[HilbertDim -1, ThetaPhase, ComplexCoherent, FieldFrequency, Temperature, MixConstant].Extremal[[Iterator]]], 
 {Iterator, 1, Length[Extremal]}];
-PderivQubit[Extremal_,ThetaAngle_, Iterator_, EtaAngle_] := Module[{DerivativeVar}, D[Tr[QBDM[EtaAngle, DerivativeVar].Extremal[[Iterator]]], DerivativeVar] /. {DerivativeVar -> ThetaAngle}];
+PderivQubit[Extremal_,ThetaAngle_, Iterator_, EtaAngle_] := Module[{DerivativeVar}, D[Tr[QBDM[EtaAngle, DerivativeVar].Extremal[[Iterator]]], DerivativeVar] /. DerivativeVar -> ThetaAngle];
 FisherQubit[Extremal_,ThetaAngle_, EtaAngle_] := Sum[((PderivQubit[Extremal,ThetaAngle, Iterator, EtaAngle])^2)/Tr[QBDM[EtaAngle, ThetaAngle].Extremal[[Iterator]]], {Iterator, 1, Length[Extremal]}];
 (*}}}*)
 
