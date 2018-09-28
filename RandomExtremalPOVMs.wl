@@ -221,7 +221,7 @@ Optimal = {};
 (*Here, the Dimensions have to be fixed. *)
 HilbertDim = 2;
 Outcomedim = 4;
-Off[Infinity::indet];
+(*Quiet[Infinity::indet];*)
 (*}}}*) 
 (*{{{*)   
    Timing[Do[VT = {};
