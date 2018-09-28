@@ -20,3 +20,15 @@ https://github.com/carlospgmat03/libs
    ./RandomExtremalPOVMs.wl -o Qubit --EtaAngle 3.1416
 
 The program will print the solution to the screen.
+
+The options are:
+
+  -n  The average number of photons of the field.
+  -T  The temperature.
+  -s  The number of random samplings.
+  -o  Option of the problem to calculate: CohPlusTher or Qubit.
+  -h  The angle eta in the case of choosing the Qubit case.
+  -hD The dimension of the Hilbert space to use. As n grows a larger Hilbert space is needed.
+  -od The number of outcomes of the POVM.
+
+There are several defaults for the options.
