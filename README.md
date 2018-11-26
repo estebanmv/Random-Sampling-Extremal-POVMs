@@ -38,3 +38,11 @@ The options are:
   -od The number of outcomes of the POVM.
 
 There are several defaults for the options.
+
+To reproduce the results in the article:
+For the Qubit case, put the flag -o Qubit, and vary flag --EtaAngle from 0 to Pi.
+For the Phase Estimation case, put the flag -o CohPlusTher that is default. Also, put
+the temperature -T 10^-3, the mixing constant --MixConstant 0.5, the samplings -s 80,
+the --HilbertDim 7 and the -- Outcomedim 10. For the pure state the MixingConstant is 1.
+The squared norm of alpha is given by --MeanPhotonNumb, wich can be varied to reproduce 
+the graph. The graphs are given with the norm of alpha.
