@@ -1,5 +1,5 @@
 BeginPackage["extremallibrary`"]
-Needs["Quantum`"]
+Get["./Quantum.m"]
 
 Coherent::usage = "Defines a finite approximation to a coherent state. Requires a complex number as first input and an
 integer for the dimension to use."
@@ -32,8 +32,11 @@ FisherCoherentPlusTher::usage = "Fisher Information given the extremal POVM for 
 PderivQubit::usage = "Derivative of the probability distribution given the extremal POVM for Qubit case. 
 Requires two angles in the Bloch sphere."
 FisherQubit::usage = "Fisher Information given the extremal POVM for the Qubit case. Requires two angles."
+Gaussianpdf::usage = "The Gaussian distribution probability density function."
+NormCnsnt::usage = "Normalization constant for Gaussianpdf."
+SobraGaussian::usage = "Fisher information for a priori Gaussian distribution."
 
-Begin["Private`"]
+Begin["Private`"]      
 (*Done {{{*)
 kBoltzmann = 1.38*^-23;
 hBar = (6.626*^-34)/2 \[Pi];
@@ -79,8 +82,11 @@ Module[{DerivativeVar},D[Tr[CoherentPlusThermalState[HilbertDim -1, DerivativeVa
 FisherCoherentPlusTher[Extremal_,ThetaPhase_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_,MixConstant_] :=
 Sum[((PderivCoherentPlusTher[Extremal,ThetaPhase, Iterator, ComplexCoherent,HilbertDim,FieldFrequency,Temperature,MixConstant])^2)/Tr[CoherentPlusThermalState[HilbertDim -1, ThetaPhase, ComplexCoherent, FieldFrequency, Temperature, MixConstant].Extremal[[Iterator]]], 
 {Iterator, 1, Length[Extremal]}];
-PderivQubit[Extremal_,ThetaAngle_, Iterator_, EtaAngle_] := Module[{DerivativeVar}, D[Tr[QBDM[EtaAngle, DerivativeVar].Extremal[[Iterator]]], DerivativeVar] /. DerivativeVar -> ThetaAngle];
+PderivQubit[Extremal_,ThetaAngle_, Iterator_, EtaAngle_] := Module[{DerivativeVar}, D[Tr[QBDM[EtaAngle, DerivativeVar].Extremal[[Iterator]]], DerivativeVar] /. {DerivativeVar -> ThetaAngle}];
 FisherQubit[Extremal_,ThetaAngle_, EtaAngle_] := Sum[((PderivQubit[Extremal,ThetaAngle, Iterator, EtaAngle])^2)/Tr[QBDM[EtaAngle, ThetaAngle].Extremal[[Iterator]]], {Iterator, 1, Length[Extremal]}];
+NormCnsnt = 1/NIntegrate[Exp[-(Theta - \[Pi])^2/(2*(\[Pi]/4)^2)], {Theta, 0, 2*\[Pi]}];
+Gaussianpdf[Theta_, Sigma_, Gamma_] := NormCnsnt*Exp[-(Theta - Gamma)^2/(2*Sigma^2)];
+SobraGaussian = NIntegrate[Power[D[Gaussianpdf[Theta, \[Pi]/4, \[Pi]], Theta], 2]/Gaussianpdf[Theta,\[Pi]/4, \[Pi]], {Theta, 0, 2*\[Pi]}];
 (*}}}*)
 
 End[]
