@@ -29,7 +29,9 @@ The options are:
 
   -s  The number of random samplings.
 
-  -o  Option of the problem to calculate: CohPlusTher or Qubit.
+  -o  Option of the problem to calculate: CohPlusTherGamma, CohPlusTherGaussian or Qubit.
+  This includes the Cooherent and Thermal mix using a Gamma distribution, using a Gaussian distribution
+  and the Qubit case.
 
   -h  The angle eta in the case of choosing the Qubit case.
 
@@ -37,4 +39,4 @@ The options are:
 
   -od The number of outcomes of the POVM.
 
-There are several defaults for the options.
+There are several defaults for the options which can be seen in the main running file.
