@@ -61,7 +61,7 @@ While[counterCommandLine <= Length[$ScriptCommandLine],
   "-mix" | "--MixConstant", 
     MixConstant = ToExpression[$ScriptCommandLine[[counterCommandLine+1]]]; counterCommandLine += 2,
   _, 
-    Print["Error en la linea de parametro. Option \"", 
+    Print["Error in parameter line. Option \"", 
       $ScriptCommandLine[[counterCommandLine]] , "\" not found."];  Exit[1]
  ]
 ];
