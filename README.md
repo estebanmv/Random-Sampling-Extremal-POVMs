@@ -25,6 +25,8 @@ The options are:
 
   -n  The average number of photons of the field.
 
+  -mix  The weight of the pure state (-mix 1 produces a pure state, -mix 0 the maximally mixed state)
+
   -T  The temperature.
 
   -s  The number of random samplings.
