@@ -6,21 +6,43 @@ data_fig_1b ::
 		./RandomExtremalPOVMs.wl -o Qubit --EtaAngle $$eta ;\
 	done;
 
+data_fig_2a_pre ::
+	for alpha in $$(seq 0.1 0.2 1.2); do \
+		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
+  		echo alpha $$alpha " ";\
+		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 5 -hD 5 -od 7 -mix 1 -n $$alpha_square ; \
+	done;
+
+data_fig_2b_pre ::
+	for alpha in $$(seq 0.1 0.3 2.2); do \
+		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
+  		echo alpha $$alpha " ";\
+		./RandomExtremalPOVMs.wl -o CohPlusTherGamma -s 5 -hD 5 -od 7 -mix 0.5 -n $$alpha_square ; \
+	done;
+
 data_fig_2a ::
 	for alpha in $$(seq 0.1 0.2 1.2); do \
 		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-# 		echo alpha square $$alpha_square " ";\
   		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 5 -hD 5 -od 7 -mix 1 -n $$alpha_square ; \
+		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -mix 1 -n $$alpha_square ; \
 	done;
 
 data_fig_2b ::
 	for alpha in $$(seq 0.1 0.3 2.2); do \
 		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-# 		echo alpha square $$alpha_square " ";\
   		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o CohPlusTherGamma -s 5 -hD 5 -od 7 -mix 0.5 -n $$alpha_square ; \
+		./RandomExtremalPOVMs.wl -o CohPlusTherGamma -s 150 -mix 0.5 -n $$alpha_square ; \
 	done;
+
+all ::
+	date
+	make data_fig_1b
+	date
+	make data_fig_2a
+	date
+	make data_fig_2b
+	date
+	
 
 # 		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 5 -hD 5 -od 7 -mix 1 -n $$alpha ; \
 
