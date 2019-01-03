@@ -34,6 +34,7 @@ convergence and the other has to do with finding a Linear Program solution. Neit
 *)
 Off[NIntegrate::ncvb]
 Off[NIntegrate::slwcon]
+Off[Infinity::indet]
 (*Defaults {{{*)
 {option = "CohPlusTherGamma", Samplings = 150, MeanPhotonNumb = 0.5, Temperature = 1*^-3, MixConstant = 0.5, EtaAngle = \[Pi]/2, 
 HilbertDim = 7, Outcomedim = 10, WriteDirectory = "."}
