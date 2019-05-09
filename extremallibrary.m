@@ -5,6 +5,7 @@ Coherent::usage = "Defines a finite approximation to a coherent state. Requires 
 integer for the dimension to use."
 PhaseNumberOperatorMatrix::usage = "Induces a phase depending in the number of the Fock space. Requires the phase angle and
 the dimension of the state it is acting on."
+DPhaseNumberOperatorMatrix::usage = "Derivative of the previous function."
 PsiTheta::usage = "Gives the number operator exponential applied to the coherent state. Requires the same as Coherent plus the phase."
 PsiThetaNormalized::usage = "Normalized version of the previous state."
 PsiThetaDM::usage = "Density matrix of the normalized state."
@@ -36,8 +37,16 @@ Gaussianpdf::usage = "The Gaussian distribution probability density function."
 NormCnsnt::usage = "Normalization constant for Gaussianpdf."
 SobraGaussian::usage = "Fisher information for a priori Gaussian distribution."
 
+LaddUp::usage = "Anhilation operator in Fock basis."
+LaddDwn::usage = "Creation operator in Fock basis."
+Displacement::usage = "Displacement operator for dimension n and complex Alpha."
+DisplacedThermal::usage = "Displaced Thermal state with phase variation."
+PderivDispTher::usage = "Derivative of the probability distribution given the extremal POVM for Displaced Thermal case. Requires the Phase, the number of the POVM element and a complex number for the Coherent state."
+FisherDispTher::usage = "Fisher Information given the extremal POVM for the Displaced Thermal case. Requires the Phase and the initial Complex number of the coherent state."
+
 Begin["Private`"]      
 (*Done {{{*)
+
 kBoltzmann = 1.38*^-23;
 hBar = (6.626*^-34)/2 \[Pi];
 
@@ -87,6 +96,20 @@ FisherQubit[Extremal_,ThetaAngle_, EtaAngle_] := Sum[((PderivQubit[Extremal,Thet
 NormCnsnt = 1/NIntegrate[Exp[-(Theta - \[Pi])^2/(2*(\[Pi]/4)^2)], {Theta, 0, 2*\[Pi]}];
 Gaussianpdf[Theta_, Sigma_, Gamma_] := NormCnsnt*Exp[-(Theta - Gamma)^2/(2*Sigma^2)];
 SobraGaussian = NIntegrate[Power[D[Gaussianpdf[Theta, \[Pi]/4, \[Pi]], Theta], 2]/Gaussianpdf[Theta,\[Pi]/4, \[Pi]], {Theta, 0, 2*\[Pi]}];
+
+
+DPhaseNumberOperatorMatrix[\[Theta]_,m_]:=Table[Chop[KroneckerDelta[i,j]*(i-1)*I*Exp[I*\[Theta]*(i-1)]],{i,m+1},{j,m+1}];
+LaddUp[n_, \[Alpha]_] := Array[\[Alpha]*Sqrt[#1 - 1]*KroneckerDelta[#1 + 1, #2] &, {n, n}];
+LaddDwn[n_, \[Alpha]_] := Array[\[Alpha]*Sqrt[#1 - 2]*KroneckerDelta[#1 - 1, #2] &, {n, n}];
+Displacement[n_, \[Alpha]_] := N[MatrixExp[LaddDwn[n, \[Alpha]] - LaddUp[n, \[Alpha]\[Conjugate]]]];
+DisplacedThermal[m_, \[Theta]_, \[Beta]_, \[Nu]_, T_] := PhaseNumberOperatorMatrix[-\[Theta], m].Displacement[m + 1, \[Beta]].Thermal[m, \[Nu], T].Displacement[m + 1, -\[Beta]].PhaseNumberOperatorMatrix[\[Theta], m];
+
+PderivDispTher[Extremal_,ThetaPhase_, Iterator_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] := Tr[DPhaseNumberOperatorMatrix[-ThetaPhase, m].Displacement[m + 1, \[Beta]].Thermal[m, \[Nu], T].Displacement[m + 1, -\[Beta]].PhaseNumberOperatorMatrix[ThetaPhase, m]]
++ Tr[PhaseNumberOperatorMatrix[-ThetaPhase, m].Displacement[m + 1, \[Beta]].Thermal[m, \[Nu], T].Displacement[m + 1, -\[Beta]].DPhaseNumberOperatorMatrix[ThetaPhase, m]];
+
+(*
+FisherDispTher[Extremal_,ThetaPhase_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] :=Sum[((PderivDispTher[Extremal,ThetaPhase, Iterator, ComplexCoherent,HilbertDim,FieldFrequency,Temperature])^2)/Tr[DisplacedThermal[HilbertDim -1, ThetaPhase, ComplexCoherent, FieldFrequency, Temperature].Extremal[[Iterator]]], {Iterator, 1, Length[Extremal]}];
+*)
 (*}}}*)
 
 End[]
