@@ -490,13 +490,15 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
         
    AppendTo[VT, 
          Chop[NIntegrate[
-            FisherDispTher[Extremal,ThetaPhase, ComplexCoherent,HilbertDim,FieldFrequency,Temperature]*
+            FisherDispTher[Extremal,Theta, ComplexCoherent,HilbertDim,FieldFrequency,Temperature]*
             Gaussianpdf[Theta, \[Pi]/4, \[Pi]], {Theta, 0, 2*\[Pi]}], 10^-9] + SobraGaussian];
         
         ranks = Table[
           MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];];] AppendTo[maximalist, VanTrees];
+        
+        Print["Max{Van Trees} = ",Max[maximalist]];
       (*Sampling number view.*)
       
       (*Export["./kappa_samplingnum.dat", \[Kappa]];*)
