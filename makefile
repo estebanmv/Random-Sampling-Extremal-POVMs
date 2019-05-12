@@ -1,46 +1,16 @@
 
 # This takes about 3 minutes in my laptop
 data_fig_1b ::
-	for eta in $$(seq 0 0.39 3.12); do \
-		echo -n $$eta " ";\
-		./RandomExtremalPOVMs.wl -o Qubit --EtaAngle $$eta ;\
+	for alpha in $$(seq 0.5 0.22 2.5); do \
+		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
+		echo alpha $$alpha " ";\
+		./RandomExtremalPOVMs.wl -o DispTherGaussian -n $$alpha_square ;\
 	done;
 
-data_fig_2a_pre ::
-	for alpha in $$(seq 0.1 0.2 1.2); do \
-		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-  		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 5 -hD 5 -od 7 -mix 1 -n $$alpha_square ; \
-	done;
-
-data_fig_2b_pre ::
-	for alpha in $$(seq 0.1 0.3 2.2); do \
-		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-  		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o CohPlusTherGamma -s 5 -hD 5 -od 7 -mix 0.5 -n $$alpha_square ; \
-	done;
-
-data_fig_2a ::
-	for alpha in $$(seq 0.1 0.2 1.2); do \
-		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-  		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -mix 1 -n $$alpha_square ; \
-	done;
-
-data_fig_2b ::
-	for alpha in $$(seq 0.1 0.3 2.2); do \
-		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-  		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o CohPlusTherGamma -s 150 -mix 0.5 -n $$alpha_square ; \
-	done;
 
 all ::
 	date
 	make data_fig_1b
-	date
-	make data_fig_2a
-	date
-	make data_fig_2b
 	date
 	
 
