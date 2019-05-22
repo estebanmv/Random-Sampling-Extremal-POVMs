@@ -102,11 +102,12 @@ LaddDwn[n_, \[Alpha]_] := Array[\[Alpha]*Sqrt[#1 - 2]*KroneckerDelta[#1 - 1, #2]
 Displacement[n_, \[Alpha]_] := N[MatrixExp[LaddDwn[n, \[Alpha]] - LaddUp[n, \[Alpha]\[Conjugate]]]];
 DisplacedThermal[m_, \[Theta]_, \[Beta]_, \[Nu]_, T_] := PhaseNumberOperatorMatrix[-\[Theta], m].Displacement[m + 1, \[Beta]].Thermal[m, \[Nu], T].Displacement[m + 1, -\[Beta]].PhaseNumberOperatorMatrix[\[Theta], m];
 
-PderivDispTher[Extremal_,ThetaPhase_, Iterator_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] := Tr[DPhaseNumberOperatorMatrix[-ThetaPhase, HilbertDim-1].Displacement[HilbertDim, ComplexCoherent].Thermal[HilbertDim-1, FieldFrequency, Temperature]
-.Displacement[HilbertDim, -ComplexCoherent].PhaseNumberOperatorMatrix[ThetaPhase, HilbertDim-1].Extremal[[Iterator]]] + Tr[PhaseNumberOperatorMatrix[-ThetaPhase, HilbertDim-1].Displacement[HilbertDim, ComplexCoherent].Thermal[HilbertDim-1, FieldFrequency, Temperature]
-.Displacement[HilbertDim, -ComplexCoherent].DPhaseNumberOperatorMatrix[ThetaPhase, HilbertDim-1].Extremal[[Iterator]]];
+(*PderivDispTher[Extremal_,ThetaPhase_, Iterator_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] := Module[{DerivativeVar}, D[Tr[PhaseNumberOperatorMatrix[-DerivativeVar, HilbertDim-1].Displacement[HilbertDim, ComplexCoherent].Thermal[HilbertDim-1, FieldFrequency, Temperature]
+.Displacement[HilbertDim, -ComplexCoherent].PhaseNumberOperatorMatrix[DerivativeVar, HilbertDim-1].Extremal[[Iterator]]], DerivativeVar] /. {DerivativeVar -> ThetaPhase}];*)
 
-FisherDispTher[Extremal_,ThetaPhase_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] :=Sum[((PderivDispTher[Extremal,ThetaPhase, Iterator, ComplexCoherent,HilbertDim,FieldFrequency,Temperature])^2)/Tr[DisplacedThermal[HilbertDim -1, ThetaPhase, ComplexCoherent, FieldFrequency, Temperature].Extremal[[Iterator]]], {Iterator, 1, Length[Extremal]}];
+PderivDispTher[Extremal_,ThetaPhase_, Iterator_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] := Module[{DerivativeVar}, D[Tr[DisplacedThermal[HilbertDim, DerivativeVar, ComplexCoherent, FieldFrequency, Temperature].Extremal[[Iterator]]], DerivativeVar] /. {DerivativeVar -> ThetaPhase}];
+
+FisherDispTher[Extremal_,ThetaPhase_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] :=Sum[((PderivDispTher[Extremal,ThetaPhase, Iterator, ComplexCoherent,HilbertDim-1,FieldFrequency,Temperature])^2)/Tr[DisplacedThermal[HilbertDim -1, ThetaPhase, ComplexCoherent, FieldFrequency, Temperature].Extremal[[Iterator]]], {Iterator, 1, Length[Extremal]}];
 (*}}}*)
 
 End[]

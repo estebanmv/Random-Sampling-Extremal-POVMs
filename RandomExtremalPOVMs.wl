@@ -490,7 +490,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
         
    AppendTo[VT, 
          Chop[NIntegrate[
-            FisherDispTher[Extremal,Theta, ComplexCoherent,HilbertDim,FieldFrequency,Temperature]*
+            FisherDispTher[Extremal,Theta, ComplexCoherent*(1+I)/Sqrt[2],HilbertDim,FieldFrequency,Temperature]*
             Gaussianpdf[Theta, \[Pi]/4, \[Pi]], {Theta, 0, 2*\[Pi]}], 10^-9] + SobraGaussian];
         
         ranks = Table[
@@ -498,7 +498,8 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];];] AppendTo[maximalist, VanTrees];
         
-        Print["Max{Van Trees} = ",Max[maximalist]];
+       (* Print["Max{Van Trees} = ",Max[maximalist]];
+        Print["Min{Van Trees} = ",Min[maximalist]];*)
       (*Sampling number view.*)
       
       (*Export["./kappa_samplingnum.dat", \[Kappa]];*)
@@ -508,7 +509,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
   "./tiemposCoherentplusthermalExtremales.dat";*)
   (*}}}*)
 (*PutAppend[Max[maximalist], WriteDirectory<>"/VanCohplusthervalues.dat"];*) (*This file contains the Maximum value of the Van Trees Information found.*)
-  Print["Max{Van Trees} = ",Max[maximalist]];
+  Print["For Complex^2 = ",MeanPhotonNumb,"Max{Van Trees} = ",Max[maximalist]];
   ,
   "Qubit",
 (* Initialize lists {{{*)
