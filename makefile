@@ -1,10 +1,10 @@
 
 # This takes about 3 minutes in my laptop
 data_fig_1b ::
-	for alpha in $$(seq 0.2 0.23 2.5); do \
+	for alpha in $$(seq 0.1 0.5 5.1); do \
 		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
 		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o DispTherGaussian -n $$alpha_square -s 10;\
+		./RandomExtremalPOVMs.wl -o DispTherGaussian -n $$alpha_square -s 150;\
 	done;
 
 

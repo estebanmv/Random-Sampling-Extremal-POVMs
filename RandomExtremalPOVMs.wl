@@ -32,9 +32,9 @@ Needs["Quantum`"]
 (* NOTE This program gives 2 warnings that I have not been able to eliminate. One is for Integral 
 convergence and the other has to do with finding a Linear Program solution. Neither of them affect directly the result. 
 *)
-Off[NIntegrate::ncvb]
+(*Off[NIntegrate::ncvb]
 Off[NIntegrate::slwcon]
-Off[Infinity::indet]
+Off[Infinity::indet]*)
 (*Defaults {{{*)
 {option = "CohPlusTherGamma", Samplings = 150, MeanPhotonNumb = 0.5, Temperature = 1*^-3, MixConstant = 0.5, EtaAngle = \[Pi]/2, 
 HilbertDim = 7, Outcomedim = 10, WriteDirectory = "."}
@@ -504,12 +504,13 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
       
       (*Export["./kappa_samplingnum.dat", \[Kappa]];*)
       PrintTemporary[\[Kappa]];
-      , {\[Kappa], 
-       Samplings}];][[1]] (*>>> 
+      , {\[Kappa], Samplings}];][[1]] (*>>> 
   "./tiemposCoherentplusthermalExtremales.dat";*)
   (*}}}*)
 (*PutAppend[Max[maximalist], WriteDirectory<>"/VanCohplusthervalues.dat"];*) (*This file contains the Maximum value of the Van Trees Information found.*)
   Print["For Complex^2 = ",MeanPhotonNumb,"Max{Van Trees} = ",Max[maximalist]];
+
+    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermal.dat";
   ,
   "Qubit",
 (* Initialize lists {{{*)
