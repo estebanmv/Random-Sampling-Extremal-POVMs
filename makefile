@@ -4,7 +4,7 @@ data_fig_1b ::
 	for alpha in $$(seq 0.1 0.25 2.6); do \
 		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
 		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o DispTherGaussian -n $$alpha_square -s 250;\
+		./RandomExtremalPOVMs.wl -o DispTherGaussian -n $$alpha_square -s 150 -hD 10 -od 15;\
 	done;
 
 
