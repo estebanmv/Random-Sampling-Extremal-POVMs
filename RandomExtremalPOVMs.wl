@@ -32,9 +32,9 @@ Needs["Quantum`"]
 (* NOTE This program gives 2 warnings that I have not been able to eliminate. One is for Integral 
 convergence and the other has to do with finding a Linear Program solution. Neither of them affect directly the result. 
 *)
-(*Off[NIntegrate::ncvb]
+Off[NIntegrate::ncvb]
 Off[NIntegrate::slwcon]
-Off[Infinity::indet]*)
+Off[Infinity::indet]
 (*Defaults {{{*)
 {option = "CohPlusTherGamma", Samplings = 150, MeanPhotonNumb = 0.5, Temperature = 1*^-3, MixConstant = 0.5, EtaAngle = \[Pi]/2, 
 HilbertDim = 7, Outcomedim = 10, WriteDirectory = "."}
@@ -108,14 +108,14 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
              
              For[r = 1, r <= (HilbertDim^2 - 1), r++, 
               AppendTo[vectA, 
-                Chop[0.5*
+                Chop[
                   Tr[projector[unPOVM,n, i].(GellMann[HilbertDim][[r]])]]];];
              AppendTo[vectA, 1];
              AppendTo[A, vectA];];, If[rank == 1, vectA = {};
               
               For[r = 1, r <= (HilbertDim^2 - 1), r++, 
                AppendTo[vectA, 
-                 Chop[0.5*Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
+                 Chop[Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
               AppendTo[vectA, 1];
               AppendTo[A, vectA];];]];];
         A = Transpose[A];
@@ -252,14 +252,14 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
              
              For[r = 1, r <= (HilbertDim^2 - 1), r++, 
               AppendTo[vectA, 
-                Chop[0.5*
+                Chop[
                   Tr[projector[unPOVM,n, i].(GellMann[HilbertDim][[r]])]]];];
              AppendTo[vectA, 1];
              AppendTo[A, vectA];];, If[rank == 1, vectA = {};
               
               For[r = 1, r <= (HilbertDim^2 - 1), r++, 
                AppendTo[vectA, 
-                 Chop[0.5*Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
+                 Chop[Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
               AppendTo[vectA, 1];
               AppendTo[A, vectA];];]];];
         A = Transpose[A];
@@ -396,14 +396,14 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
              
              For[r = 1, r <= (HilbertDim^2 - 1), r++, 
               AppendTo[vectA, 
-                Chop[0.5*
+                Chop[
                   Tr[projector[unPOVM,n, i].(GellMann[HilbertDim][[r]])]]];];
              AppendTo[vectA, 1];
              AppendTo[A, vectA];];, If[rank == 1, vectA = {};
               
               For[r = 1, r <= (HilbertDim^2 - 1), r++, 
                AppendTo[vectA, 
-                 Chop[0.5*Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
+                 Chop[Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
               AppendTo[vectA, 1];
               AppendTo[A, vectA];];]];];
         A = Transpose[A];
@@ -546,14 +546,14 @@ Outcomedim = 4;
              
              For[r = 1, r <= (HilbertDim^2 - 1), r++, 
               AppendTo[vectA, 
-                Chop[0.5*
+                Chop[
                   Tr[projector[unPOVM,n, i].(GellMann[HilbertDim][[r]])]]];];
              AppendTo[vectA, 1];
              AppendTo[A, vectA];];, If[rank == 1, vectA = {};
               
               For[r = 1, r <= (HilbertDim^2 - 1), r++, 
                AppendTo[vectA, 
-                 Chop[0.5*Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
+                 Chop[Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
               AppendTo[vectA, 1];
               AppendTo[A, vectA];];]];];
         A = Transpose[A];
