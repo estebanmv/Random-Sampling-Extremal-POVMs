@@ -18,8 +18,7 @@ QubitState::usage = "The state of a Qubit given by two angles in the Bloch spher
 QBDM::usage = "Density matrix correspondent to the Qubit."
 CoherentPlusThermalState::usage = "The convex sum of a Coherent plus a thermal state modified by the phase operator."
 GellMann::usage = "Yields a table with all the Gell-Mann Matrices of a given dimension. You must input the dimension. This
-function was found in the blog: https://blog.suchideas.com/2016/04/sun-gell-mann-matrices-in-
-mathematica/ ."
+function was found in the blog: https://blog.suchideas.com/2016/04/sun-gell-mann-matrices-in-mathematica/ ."
 CanonicalProjector::usage = "Canonical basis for the matrix space of dimension dim."
 POVM::usage = "Generates a random POVM of dimension HilbertDim with Outcomedim the number of outcomes."
 Gammapdf::usage = "We use the Gamma distribution for our calculation."
@@ -43,6 +42,11 @@ Displacement::usage = "Displacement operator for dimension n and complex Alpha."
 DisplacedThermal::usage = "Displaced Thermal state with phase variation."
 PderivDispTher::usage = "Derivative of the probability distribution given the extremal POVM for Displaced Thermal case. Requires the Phase, the number of the POVM element and a complex number for the Coherent state."
 FisherDispTher::usage = "Fisher Information given the extremal POVM for the Displaced Thermal case. Requires the Phase and the initial Complex number of the coherent state."
+AConstruction::usage = "Construct the A matrix and the b vector for the Linear program."
+LinearProg::usage = "Using the LinearProgramming routine calculate a random feasible solution of the linear program defined by A and b from AConstruction."
+BuildExtremal::usage = "Builds extremal solution from the results of the Linear Program."
+CalculateP::usage = "Calculates the probability p that separates the extremal POVM from the auxiliar POVM."
+AuxiliarSol::usage = "Calculates the auxiliar (residual) solution by extracting the extremal POVM from the original one."
 
 Begin["Private`"]      
 (*Done {{{*)
@@ -102,12 +106,115 @@ LaddDwn[n_, \[Alpha]_] := Array[\[Alpha]*Sqrt[#1 - 2]*KroneckerDelta[#1 - 1, #2]
 Displacement[n_, \[Alpha]_] := N[MatrixExp[LaddDwn[n, \[Alpha]] - LaddUp[n, \[Alpha]\[Conjugate]]]];
 DisplacedThermal[m_, \[Theta]_, \[Beta]_, \[Nu]_, T_] := PhaseNumberOperatorMatrix[-\[Theta], m].Displacement[m + 1, \[Beta]].Thermal[m, \[Nu], T].Displacement[m + 1, -\[Beta]].PhaseNumberOperatorMatrix[\[Theta], m];
 
-(*PderivDispTher[Extremal_,ThetaPhase_, Iterator_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] := Module[{DerivativeVar}, D[Tr[PhaseNumberOperatorMatrix[-DerivativeVar, HilbertDim-1].Displacement[HilbertDim, ComplexCoherent].Thermal[HilbertDim-1, FieldFrequency, Temperature]
-.Displacement[HilbertDim, -ComplexCoherent].PhaseNumberOperatorMatrix[DerivativeVar, HilbertDim-1].Extremal[[Iterator]]], DerivativeVar] /. {DerivativeVar -> ThetaPhase}];*)
-
 PderivDispTher[Extremal_,ThetaPhase_, Iterator_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] := Module[{DerivativeVar}, D[Tr[DisplacedThermal[HilbertDim, DerivativeVar, ComplexCoherent, FieldFrequency, Temperature].Extremal[[Iterator]]], DerivativeVar] /. {DerivativeVar -> ThetaPhase}];
 
 FisherDispTher[Extremal_,ThetaPhase_, ComplexCoherent_,HilbertDim_,FieldFrequency_,Temperature_] :=Sum[((PderivDispTher[Extremal,ThetaPhase, Iterator, ComplexCoherent,HilbertDim-1,FieldFrequency,Temperature])^2)/Tr[DisplacedThermal[HilbertDim -1, ThetaPhase, ComplexCoherent, FieldFrequency, Temperature].Extremal[[Iterator]]], {Iterator, 1, Length[Extremal]}];
+
+AConstruction[unPOVM_,HilbertDim_,Outcomedim_]:= Do[Module[{n, r, i}, 
+        A = {};
+        vectA = {};
+        dimtot = Outcomedim;
+        lenghtunpovm = Length[unPOVM];
+        ranks = {};
+         For[n = 1, n <= lenghtunpovm, n++, 
+           rank = MatrixRank[unPOVM[[n]]];
+           If[rank > 1, dimtot = dimtot + rank - 1;
+            For[i = 1, i <= rank, i++, vectA = {};
+             
+             For[r = 1, r <= (HilbertDim^2 - 1), r++, 
+              AppendTo[vectA, 
+                Chop[
+                  Tr[projector[unPOVM,n, i].(GellMann[HilbertDim][[r]])]]];];
+             AppendTo[vectA, 1];
+             AppendTo[A, vectA];];, If[rank == 1, vectA = {};
+              
+              For[r = 1, r <= (HilbertDim^2 - 1), r++, 
+               AppendTo[vectA, 
+                 Chop[Tr[POVMUnit[unPOVM,n].(GellMann[HilbertDim][[r]])]]];];
+              AppendTo[vectA, 1];
+              AppendTo[A, vectA];];]];
+        A = Transpose[A];
+        b = Table[0, {n, 1, HilbertDim^2 - 1}]~Join~{HilbertDim};
+        ];
+        Return[{A,b}],1];
+
+LinearProg[A_,b_]:=Do[
+        bprime = Table[{b[[i]], 0}, {i, 1, Length[b]}];
+        RandV = RandomReal[{0, 1}, Dimensions[A][[2]]];
+
+        Sol = LinearProgramming[RandV, A, bprime, Method -> "Simplex"];
+         Return[Sol],1];
+
+BuildExtremal[Sol_,unPOVM_]:= Do[
+        Module[{r, u}, 
+       ExtPOVM = {};
+        ranksum = 0;
+        rank1case = 0;
+        prevcases = 0;
+         For[r = 1, r <= lenghtunpovm, r++, 
+           rank = MatrixRank[unPOVM[[r]]];
+           
+           If[rank > 1, 
+            
+            For[u = 1, u <= rank, u++, 
+             AppendTo[ExtPOVM, 
+              projector[unPOVM,r, u]*Sol[[prevcases + u]]]];
+            ranksum = ranksum + rank;, 
+            If[rank == 1, 
+              AppendTo[ExtPOVM, POVMUnit[unPOVM,r]*Sol[[prevcases + 1]]];
+              rank1case = rank1case + 1];];
+           prevcases = ranksum + rank1case;];
+        Extremal = {};
+        For[u = 1, u <= Length[ExtPOVM], u++, 
+         If[MatrixRank[Chop[ExtPOVM[[u]]]] != 0, 
+          AppendTo[Extremal, ExtPOVM[[u]]]]];
+          ];
+          Return[Extremal],1];
+
+CalculateP[Sol_,unPOVM_]:=
+        Do[avector = {};
+        auxa = {};
+           Module[{\[Nu]}, 
+         For[\[Nu] = 1, \[Nu] <= lenghtunpovm, \[Nu]++, 
+           rank = MatrixRank[unPOVM[[\[Nu]]]];
+           
+           If[rank > 1, 
+            For[\[Eta] = 1, \[Eta] <= rank, \[Eta]++, 
+             AppendTo[avector, Chop[eivalues[unPOVM,\[Nu], \[Eta]]]];], 
+            If[rank == 1, 
+              AppendTo[avector, Chop[Tr[unPOVM[[\[Nu]]]]]]];]];];
+        ListaCocientes = {};
+              ListaCocientes = 
+         Table[If[Sol[[\[Sigma]]] == 0, 0, 
+           avector[[\[Sigma]]]/Sol[[\[Sigma]]]], {\[Sigma], 1, 
+           Length[avector]}];
+        prob = Min[Select[ListaCocientes, # > 0. &]];
+        Return[{prob, avector}],1];
+
+AuxiliarSol[prob_, avector_, Sol_, unPOVM_] :=
+        Do[If[Chop[Abs[1. - prob], 10^-5] == 0, Break[], 
+         SolAux = (1./(1. - prob))*(avector - prob*Sol);];
+        
+        otroPOVM = {};
+        prevcases = 0;
+        ranksum = 0;
+        rank1case = 0;
+        Module[{k, u}, 
+         For[k = 1, k <= lenghtunpovm, k++, 
+           rank = MatrixRank[unPOVM[[k]]];
+           
+           If[rank > 1, 
+            For[u = 1, u <= rank, u++, 
+             AppendTo[otroPOVM, 
+              projector[unPOVM,k, u]*SolAux[[prevcases + u]]]];
+            ranksum = ranksum + rank;, 
+            If[rank == 1, 
+              AppendTo[otroPOVM, 
+               POVMUnit[unPOVM,k]*SolAux[[prevcases + 1]]];
+              rank1case = rank1case + 1];];
+           prevcases = rank1case + ranksum;];];
+           Return[otroPOVM],1];
+
 (*}}}*)
 
 End[]
