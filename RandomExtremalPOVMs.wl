@@ -293,7 +293,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
   
     Print["For Complex^2 = ",MeanPhotonNumb,"Max{Van Trees} = ",Max[maximalist]];
 
-    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermal.dat";
+    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermal-tests.dat";
   ,
   "Qubit",
 (* Initialize lists {{{*)
