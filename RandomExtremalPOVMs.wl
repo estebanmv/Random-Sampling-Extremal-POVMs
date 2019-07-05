@@ -285,7 +285,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
       
       (*Sampling number view.*)
       
-      PrintTemporary[\[Kappa]];
+      PrintTemporary[\[Kappa],"  ",Max[maximalist]];
   
   , {\[Kappa], 
        Samplings}];][[1]] (*>>> "./tiemposCoherentplusthermalExtremales.dat";*) (*For checking the computation times.*)
