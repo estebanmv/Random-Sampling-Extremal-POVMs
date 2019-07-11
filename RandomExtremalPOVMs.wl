@@ -1,4 +1,5 @@
-#!/usr/bin/env wolframscript 
+#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
+(*#!/usr/bin/env wolframscript*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
