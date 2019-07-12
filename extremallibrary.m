@@ -52,13 +52,13 @@ Begin["Private`"]
 (*Done {{{*)
 
 kBoltzmann = 1.38*^-23;
-hBar = (6.626*^-34)/2 \[Pi];
+hBar = (6.626*^-34)/(2 \[Pi]);
 
 Coherent[ComplexCoherent_, Dimension_] := Exp[-(1/2)*((Norm[ComplexCoherent])^2)] Sum[((ComplexCoherent^(n - 1))/Sqrt[((n - 1)!)])*UnitVector[Dimension + 1, n], {n, 1, Dimension + 1}];
 PhaseNumberOperatorMatrix[Theta_, Dimension_] := Table[Chop[KroneckerDelta[i, j]*Exp[I*Theta*(i - 1)]], {i, Dimension + 1}, {j, Dimension + 1}];
 PsiTheta[ComplexCoherent_, Theta_, Dimension_] := PhaseNumberOperatorMatrix[Theta, Dimension].Coherent[ComplexCoherent, Dimension];
 PsiThetaNormalized[ComplexCoherent_, Theta_, Dimension_] := PsiTheta[ComplexCoherent, Theta, Dimension]/(PsiTheta[Conjugate[ComplexCoherent], -Theta, Dimension].PsiTheta[ComplexCoherent, Theta, Dimension]);
-PsiThetaDM[ComplexCoherent_, Theta_, Dimension_] := TensorProduct[PsiThetaNormalized[ComplexCoherent, Theta, Dimension],PsiThetaNormalized[Conjugate[ComplexCoherent], -Theta, Dimension]];
+PsiThetaDM[ComplexCoherent_, Theta_, Dimension_] := TensorProduct[PsiTheta[ComplexCoherent, Theta, Dimension],PsiTheta[Conjugate[ComplexCoherent], -Theta, Dimension]]/Tr[TensorProduct[PsiTheta[ComplexCoherent, Theta, Dimension],PsiTheta[Conjugate[ComplexCoherent], -Theta, Dimension]]];
 expectationN[FieldFrequency_,  Temperature_] := 1/(Exp[(hBar*FieldFrequency)/(kBoltzmann*Temperature)] - 1);
 Thermal[Dimension_, FieldFrequency_, Temperature_] := Sum[TensorProduct[UnitVector[Dimension + 1, n],UnitVector[Dimension + 1, n]]*expectationN[FieldFrequency, Temperature]^n/(1 + expectationN[FieldFrequency, Temperature])^(n + 1), {n, Dimension}];
 ThermalMod[Dimension_, FieldFrequency_, Temperature_, Theta_] := (PhaseNumberOperatorMatrix[-Theta, Dimension].Thermal[Dimension, FieldFrequency, Temperature]).PhaseNumberOperatorMatrix[Theta, Dimension];

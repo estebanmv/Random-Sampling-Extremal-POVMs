@@ -72,7 +72,7 @@ Switch[option,
   "test",
     Print["Testing the option mode"];
     ComplexCoherent = Sqrt[MeanPhotonNumb];
-    FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature; 
+    FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperature; 
     Print[LaddUp[5,1]];
     (*Print[Displacement[5,1+I]];
     Print[DisplacedThermal[5,\[Pi],1,FieldFrequency,Temperature];*)
@@ -84,7 +84,7 @@ maximalist = {};
 ListaCocientes = {};
 Optimal = {};
 ComplexCoherent = Sqrt[MeanPhotonNumb];
-FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature; 
+FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperature; 
 (*}}}*)
 (*{{{*)   
    Timing[Do[
@@ -156,7 +156,7 @@ maximalist = {};
 ListaCocientes = {};
 Optimal = {};
 ComplexCoherent = Sqrt[MeanPhotonNumb];
-FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature; 
+FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperature; 
 (*}}}*)
 (*{{{*)   
    Timing[Do[
@@ -230,7 +230,7 @@ maximalist = {};
 ListaCocientes = {};
 Optimal = {};
 ComplexCoherent = Sqrt[MeanPhotonNumb];
-FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature; 
+FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperature; 
 (*}}}*)
 (*{{{*)   
    Timing[Do[
@@ -294,7 +294,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[ComplexCoherent^(-2) + 1]*Temperature;
   
     Print["For Complex^2 = ",MeanPhotonNumb,"Max{Van Trees} = ",Max[maximalist]];
 
-    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermal-tests.dat";
+    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermalSqrt-tests.dat";
   ,
   "Qubit",
 (* Initialize lists {{{*)
