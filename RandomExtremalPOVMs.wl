@@ -315,7 +315,10 @@ Timing[Do[VT = {};
       H = CUEMember[Outcomedim*(HilbertDim)];
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-        While[prob < 1.,
+       
+       AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+       
+(*       While[prob < 1.,
         
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         
@@ -349,8 +352,10 @@ Timing[Do[VT = {};
           MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
-         ]; 
+         ];*) 
          
+        If[Max[VT] > VanTrees, Optimal = Extremal; 
+         VanTrees = Max[VT];]; 
          AppendTo[maximalist, VanTrees];
       
       , {\[Kappa], 
@@ -358,6 +363,8 @@ Timing[Do[VT = {};
   (*}}}*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
+    
+   {EtaAngle,Max[maximalist]} >>> "./Qubit-tests.dat"; 
     ,
   _,
     Print["Option \"", option, "\" not found"]
