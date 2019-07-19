@@ -316,9 +316,9 @@ Timing[Do[VT = {};
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
        
-       AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+      (*     AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
        
-(*       While[prob < 1.,
+       While[prob < 1.,
         
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         
@@ -352,12 +352,14 @@ Timing[Do[VT = {};
           MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
-         ];*) 
-         
+         ]; 
+        
+        (*
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
-         AppendTo[maximalist, VanTrees];
-      
+      *)
+         
+        AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
        Samplings}];][[1]] (*>>> "./tiemposCoherentplusthermalExtremales.dat";*)
   (*}}}*)
