@@ -1,5 +1,5 @@
-#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
-(*#!/usr/bin/env wolframscript*)
+#!/usr/bin/env wolframscript
+(*#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
@@ -316,7 +316,7 @@ Timing[Do[VT = {};
       unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
        
-      (*     AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
+       (*    AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
        
        While[prob < 1.,
         
@@ -353,8 +353,8 @@ Timing[Do[VT = {};
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
          ]; 
-        
-        (*
+       
+       (*
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
       *)
@@ -366,7 +366,7 @@ Timing[Do[VT = {};
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./Qubit-tests.dat"; 
+   {EtaAngle,Max[maximalist]} >>> "./Qubit-tests1000.dat"; 
     ,
   _,
     Print["Option \"", option, "\" not found"]

@@ -1,17 +1,17 @@
 
 # This takes about 3 minutes in my laptop
 data_fig_1b ::
-	for alpha in $$(seq 0.1 0.25 2.6); do \
-		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o DispTherGaussian -n $$alpha_square -s 150 -hD 10 -od 15;\
+	for alpha in $$(seq 0 0.24166 3.141592); do \
+		echo alpha " ";\
+		./RandomExtremalPOVMs.wl -o Qubit -h $$alpha -s 1000;\
 	done;
 
-
-all ::
-	date
-	make data_fig_1b
-	date
+#		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
+#$$alpha
+#all ::
+#	date
+#	make data_fig_1b
+#	date
 	
 
 # 		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 5 -hD 5 -od 7 -mix 1 -n $$alpha ; \
