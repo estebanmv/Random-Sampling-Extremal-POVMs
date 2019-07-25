@@ -1,5 +1,5 @@
-#!/usr/bin/env wolframscript
-(*#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script*)
+#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
+(*#!/usr/bin/env wolframscript*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
@@ -318,6 +318,8 @@ Timing[Do[VT = {};
        
        (*    AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
        
+       AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];
+      (* 
        While[prob < 1.,
         
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
@@ -346,18 +348,19 @@ Timing[Do[VT = {};
         
         (*We calculate the Van Trees Information with the POVM found in this iteration.*)
 
-       AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+       (*AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
+       AppendTo[VT,Chop[FisherQubit[Extremal,\[Pi]/2,EtaAngle]]];
         
         ranks = Table[
           MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
          ]; 
+      *) 
        
-       (*
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
-      *)
+      
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
@@ -366,7 +369,7 @@ Timing[Do[VT = {};
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./Qubit-tests1000.dat"; 
+   {EtaAngle,Max[maximalist]} >>> "./Qubit-testsFisher1000Int.dat"; 
     ,
   _,
     Print["Option \"", option, "\" not found"]
