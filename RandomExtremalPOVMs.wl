@@ -319,7 +319,7 @@ Timing[Do[VT = {};
        (*    AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
        
        AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];
-      (* 
+      (*{{{ 
        While[prob < 1.,
         
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
@@ -356,7 +356,7 @@ Timing[Do[VT = {};
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
          ]; 
-      *) 
+      }}}*) 
        
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
@@ -364,12 +364,12 @@ Timing[Do[VT = {};
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]] (*>>> "./tiemposCoherentplusthermalExtremales.dat";*)
+       Samplings}];][[1]] >>> "./tiemposQubitRSM.dat";
   (*}}}*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./Qubit-testsFisher1000Int.dat"; 
+   {EtaAngle,Max[maximalist]} >>> "./Qubit-testsFisherVariousInt.dat"; 
     ,
   _,
     Print["Option \"", option, "\" not found"]
