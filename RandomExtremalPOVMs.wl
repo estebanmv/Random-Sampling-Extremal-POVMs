@@ -371,6 +371,47 @@ Timing[Do[VT = {};
     
    {EtaAngle,Max[maximalist]} >>> "./Qubit-testsFisherVariousInt.dat"; 
     ,
+  "QubitNaimark",
+(* Initialize lists {{{*)
+vanmuchos = {};
+maximalist = {};
+ListaCocientes = {};
+Optimal = {};
+(*Here, the Dimensions have to be fixed. *)
+HilbertDim = 2;
+Outcomedim = 4;
+(*Quiet[Infinity::indet];*)
+(*}}}*) 
+(*{{{*)   
+Timing[Do[VT = {};
+      prob = 0;
+      Sol = {};
+      VanTrees = 0;
+      
+       RandV = RandomState[2];
+       RandVDM = RandV\[TensorProduct]RandV\[Conjugate];
+       G = CUEMember[Outcomedim];
+       unPOVM = Table[UnitaryProjectors[g,G], {g, 1, Outcomedim}];
+      
+    (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
+       (*Print[QBDM[\[Pi]/2,\[Pi]/2]] 
+           Print[DilatedQubit[\[Pi]/2, \[Pi],RandVDM]]*) 
+       (*Print[unPOVM]*)
+    (*AppendTo[VT,Chop[FisherDilatedQubit[\[Pi]/2,EtaAngle,RandVDM,unPOVM] ]];*)
+     AppendTo[VT,Chop[NIntegrate[(FisherDilatedQubit[ThetaAngle,EtaAngle,RandVDM,unPOVM])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+       
+       If[Max[VT] > VanTrees, Optimal = unPOVM; 
+         VanTrees = Max[VT];]; 
+      
+         
+        AppendTo[maximalist, VanTrees];
+      , {\[Kappa], Samplings}];][[1]] (*>>> "./tiemposQubitRSM.dat";*)
+  (*}}}*)
+  
+  Print["Max{Van Trees} = ",Max[maximalist]];
+    
+   {EtaAngle,Max[maximalist]} >>> "./QubitNaimark-testsVT10.dat"; 
+    ,
   _,
     Print["Option \"", option, "\" not found"]
   ]

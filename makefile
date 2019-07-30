@@ -3,7 +3,7 @@
 data_fig_1b ::
 	for alpha in $$(seq 0 0.24166 3.141592); do \
 		echo alpha " ";\
-		./RandomExtremalPOVMs.wl -o Qubit -h $$alpha -s 1000;\
+		./RandomExtremalPOVMs.wl -o QubitNaimark -h $$alpha -s 10;\
 	done;
 
 #		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \

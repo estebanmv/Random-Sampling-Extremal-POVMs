@@ -16,6 +16,7 @@ kBoltzmann::usage = "Boltzmann constant."
 hBar::usage = "Value of the Planck constant divided by 2Pi."
 QubitState::usage = "The state of a Qubit given by two angles in the Bloch sphere: Eta and Theta."
 QBDM::usage = "Density matrix correspondent to the Qubit."
+DilatedQubit::usage = "Generates a Qubit with an ancilla."
 CoherentPlusThermalState::usage = "The convex sum of a Coherent plus a thermal state modified by the phase operator."
 GellMann::usage = "Yields a table with all the Gell-Mann Matrices of a given dimension. You must input the dimension. This
 function was found in the blog: https://blog.suchideas.com/2016/04/sun-gell-mann-matrices-in-mathematica/ ."
@@ -47,6 +48,10 @@ LinearProg::usage = "Using the LinearProgramming routine calculate a random feas
 BuildExtremal::usage = "Builds extremal solution from the results of the Linear Program."
 CalculateP::usage = "Calculates the probability p that separates the extremal POVM from the auxiliar POVM."
 AuxiliarSol::usage = "Calculates the auxiliar (residual) solution by extracting the extremal POVM from the original one."
+
+PderivDilatedQubit::usage = "Pderiv for Naimark Qubit."
+FisherDilatedQubit::usage = "Fisher for Naimark Qubit."
+UnitaryProjectors::usage = "Projectors from unitary matrix."
 
 Begin["Private`"]      
 (*Done {{{*)
@@ -171,7 +176,7 @@ BuildExtremal[Sol_,unPOVM_]:= Do[
           ];
           Return[Extremal],1];
 
-CalculateP[Sol_,unPOVM_]:=
+CalculateP[Sol_,unPOVM_]:= 
         Do[avector = {};
         auxa = {};
            Module[{\[Nu]}, 
@@ -191,7 +196,7 @@ CalculateP[Sol_,unPOVM_]:=
         prob = Min[Select[ListaCocientes, # > 0. &]];
         Return[{prob, avector}],1];
 
-AuxiliarSol[prob_, avector_, Sol_, unPOVM_] :=
+AuxiliarSol[prob_, avector_, Sol_, unPOVM_] := 
         Do[If[Chop[Abs[1. - prob], 10^-5] == 0, Break[], 
          SolAux = (1./(1. - prob))*(avector - prob*Sol);];
         
@@ -213,9 +218,17 @@ AuxiliarSol[prob_, avector_, Sol_, unPOVM_] :=
                POVMUnit[unPOVM,k]*SolAux[[prevcases + 1]]];
               rank1case = rank1case + 1];];
            prevcases = rank1case + ranksum;];];
-           Return[otroPOVM],1];
+           Return[otroPOVM],1]; 
 
-(*}}}*)
+
+DilatedQubit[EtaAngle_, ThetaAngle_,RandVDM_] := KroneckerProduct[QBDM[EtaAngle, ThetaAngle], RandVDM];        
+
+PderivDilatedQubit[ThetaAngle_, Iterator_, EtaAngle_, RandVDM_,unPOVM_] := Module[{DerivativeVar}, D[Tr[DilatedQubit[EtaAngle, DerivativeVar,RandVDM].unPOVM[[Iterator]]], DerivativeVar] /. {DerivativeVar -> ThetaAngle}];
+FisherDilatedQubit[ThetaAngle_, EtaAngle_,RandVDM_,unPOVM_] := Sum[((PderivDilatedQubit[ThetaAngle, Iterator, EtaAngle,RandVDM,unPOVM])^2)/Tr[DilatedQubit[EtaAngle, ThetaAngle,RandVDM].unPOVM[[Iterator]]], {Iterator, 1, 4}];
+
+UnitaryProjectors[Iterator_,G_] := TensorProduct[G[[All, Iterator]],Conjugate[G][[All, Iterator]]];
+         
+         (*}}}*)
 
 End[]
 EndPackage[]
