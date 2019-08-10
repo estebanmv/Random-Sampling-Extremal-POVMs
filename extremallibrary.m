@@ -77,8 +77,7 @@ GellMann[Dimension_] := Flatten[Table[(*Symmetric case*)
     Table[(*Diagonal case*)
       Sqrt[2/l/(l + 1)] SparseArray[Table[{j, j} -> 1, {j, 1, l}]~Join~{{l + 1, l + 1} -> -l}, {Dimension, Dimension}], {l, 1, Dimension - 1}];
 CanonicalProjector[iterator_,Outcomedim_] := TensorProduct[UnitVector[Outcomedim, iterator],UnitVector[Outcomedim, iterator]];
-POVM[Iterator_,HilbertDim_,Outcomedim_] := If[IntegerQ[Iterator] == True,  
-    HRandomMatrix = CUEMember[Outcomedim*(HilbertDim)]; 
+POVM[Iterator_,HilbertDim_,Outcomedim_,HRandomMatrix_] := If[IntegerQ[Iterator] == True,  
     X = {};
       Y = {};
       For[s = 0, s < HilbertDim, s++,

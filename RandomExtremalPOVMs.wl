@@ -1,5 +1,5 @@
-#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
-(*#!/usr/bin/env wolframscript*)
+#!/usr/bin/env wolframscript
+(*#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
@@ -94,7 +94,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
-      unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
+      unPOVM = Table[POVM[g,HilbertDim,Outcomedim,H], {g, 1, Outcomedim}];
       
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
      
@@ -166,7 +166,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
-      unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
+      unPOVM = Table[POVM[g,HilbertDim,Outcomedim,H], {g, 1, Outcomedim}];
       
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
      
@@ -240,7 +240,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
-      unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
+      unPOVM = Table[POVM[g,HilbertDim,Outcomedim,H], {g, 1, Outcomedim}];
       
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
      
@@ -248,7 +248,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
     
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         
-       {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim];
+       Quiet[ Check[ {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim]; ,Break[]]];
        
         (*Linear Programming to find a solution. We find the optimum with a random vector, therefore, 
         it is a random element of the polytope. We need to add a Break because sometimes a solution 
@@ -294,7 +294,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
   
     Print["For Complex^2 = ",MeanPhotonNumb,"Max{Van Trees} = ",Max[maximalist]];
 
-    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermalSqrt-tests.dat";
+    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermalSqrt-redo.dat";
   ,
   "Qubit",
 (* Initialize lists {{{*)
@@ -313,19 +313,20 @@ Timing[Do[VT = {};
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
-      unPOVM = Table[POVM[g,HilbertDim,Outcomedim], {g, 1, Outcomedim}];
+      unPOVM = Table[POVM[g,HilbertDim,Outcomedim,H], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
        
        (*    AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
-       
+      
        AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];
+      
       (*{{{ 
-       While[prob < 1.,
+      While[prob < 1.,
         
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
-        
-       {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim];
        
+       Quiet[ Check[ {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim]; ,Break[]]];
+
         (*Linear Programming to find a solution. We find the optimum with a random vector, therefore, 
         it is a random element of the polytope. We need to add a Break because sometimes a solution 
         cannot be found.*)
@@ -348,8 +349,8 @@ Timing[Do[VT = {};
         
         (*We calculate the Van Trees Information with the POVM found in this iteration.*)
 
-       (*AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
-       AppendTo[VT,Chop[FisherQubit[Extremal,\[Pi]/2,EtaAngle]]];
+       AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+       (*AppendTo[VT,Chop[FisherQubit[Extremal,\[Pi]/2,EtaAngle]]];*)
         
         ranks = Table[
           MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
@@ -364,12 +365,12 @@ Timing[Do[VT = {};
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]] >>> "./tiemposQubitRSM.dat";
-  (*}}}*)
+       Samplings}];][[1]] (*>>> "./tiemposQubitRSM.dat";*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./Qubit-testsFisherVariousInt.dat"; 
+   {EtaAngle,Max[maximalist]} >>> "./Qubit-VT1000Int.dat"; 
+  (*}}}*)
     ,
   "QubitNaimark",
 (* Initialize lists {{{*)
