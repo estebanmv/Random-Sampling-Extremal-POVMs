@@ -52,6 +52,7 @@ AuxiliarSol::usage = "Calculates the auxiliar (residual) solution by extracting 
 PderivDilatedQubit::usage = "Pderiv for Naimark Qubit."
 FisherDilatedQubit::usage = "Fisher for Naimark Qubit."
 UnitaryProjectors::usage = "Projectors from unitary matrix."
+POVMcc::usage = "Uses Chuang method to produce random POVM."
 
 Begin["Private`"]      
 (*Done {{{*)
@@ -226,7 +227,13 @@ PderivDilatedQubit[ThetaAngle_, Iterator_, EtaAngle_, RandVDM_,unPOVM_] := Modul
 FisherDilatedQubit[ThetaAngle_, EtaAngle_,RandVDM_,unPOVM_] := Sum[((PderivDilatedQubit[ThetaAngle, Iterator, EtaAngle,RandVDM,unPOVM])^2)/Tr[DilatedQubit[EtaAngle, ThetaAngle,RandVDM].unPOVM[[Iterator]]], {Iterator, 1, 4}];
 
 UnitaryProjectors[Iterator_,G_] := TensorProduct[G[[All, Iterator]],Conjugate[G][[All, Iterator]]];
-         
+POVMcc[Outcomedim_, H_] := Do[Module[{k}, CCPOVM = {};
+    For[k = 1, k <= Outcomedim, k++,
+     Q = {{H[[k, 1]], H[[k, 5]]}, {H[[k + 4, 1]], H[[k + 4, 5]]}};
+     AppendTo[CCPOVM, ConjugateTranspose[Q].Q];
+     ];
+    ];
+   Return[CCPOVM], 1];        
          (*}}}*)
 
 End[]

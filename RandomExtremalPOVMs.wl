@@ -413,6 +413,82 @@ Timing[Do[VT = {};
     
    {EtaAngle,Max[maximalist]} >>> "./QubitNaimark-testsVT10.dat"; 
     ,
+  "QubitCC",
+(* Initialize lists {{{*)
+vanmuchos = {};
+maximalist = {};
+ListaCocientes = {};
+Optimal = {};
+(*Here, the Dimensions have to be fixed. *)
+HilbertDim = 2;
+Outcomedim = 4;
+(*Quiet[Infinity::indet];*)
+(*}}}*) 
+(*{{{*)   
+Timing[Do[VT = {};
+      prob = 0;
+      Sol = {};
+      VanTrees = 0;
+      H = CUEMember[Outcomedim*(HilbertDim)];
+      unPOVM = Table[POVMcc[Outcomedim,H][[g]], {g, 1, Outcomedim}];
+      (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
+       
+       (*    AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
+      
+       AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];
+      
+      (*{{{ 
+      While[prob < 1.,
+        
+        (*Decomposition of the original randomly produced POVM into the matrix A.*)
+       
+       Quiet[ Check[ {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim]; ,Break[]]];
+
+        (*Linear Programming to find a solution. We find the optimum with a random vector, therefore, 
+        it is a random element of the polytope. We need to add a Break because sometimes a solution 
+        cannot be found.*)
+        
+       Quiet[ Check[ Sol = LinearProg[A,b]; ,Break[]]];
+        
+        (*With the result of the Linear Program we construct the extremal POVM.*)
+       
+       Extremal = BuildExtremal[Sol,unPOVM];
+        
+        (*We calculate the constant probability p.*)
+
+       {prob,avector} = CalculateP[Sol,unPOVM];
+
+        (*We construct the auxiliar POVM and recall it unPOVM.*)
+        
+       otroPOVM = AuxiliarSol[prob, avector, Sol, unPOVM]; 
+
+        unPOVM = otroPOVM;
+        
+        (*We calculate the Van Trees Information with the POVM found in this iteration.*)
+
+       AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+       (*AppendTo[VT,Chop[FisherQubit[Extremal,\[Pi]/2,EtaAngle]]];*)
+        
+        ranks = Table[
+          MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
+        If[Max[VT] > VanTrees, Optimal = Extremal; 
+         VanTrees = Max[VT];]; 
+         ]; 
+      }}}*) 
+       
+        If[Max[VT] > VanTrees, Optimal = Extremal; 
+         VanTrees = Max[VT];]; 
+      
+         
+        AppendTo[maximalist, VanTrees];
+      , {\[Kappa], 
+       Samplings}];][[1]] (*>>> "./tiemposQubitRSM.dat";*)
+  
+  Print["Max{Van Trees} = ",Max[maximalist]];
+    
+(*   {EtaAngle,Max[maximalist]} >>> "./Qubit-VT1000Int.dat";*) 
+  (*}}}*)
+    ,
   _,
     Print["Option \"", option, "\" not found"]
   ]
