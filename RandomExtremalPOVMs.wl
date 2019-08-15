@@ -1,5 +1,5 @@
-#!/usr/bin/env wolframscript
-(*#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script*)
+#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
+(*#!/usr/bin/env wolframscript*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
@@ -102,7 +102,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
     
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         
-       {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim];
+       Quiet[ Check[ {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim]; ,Break[]]];
        
         (*Linear Programming to find a solution. We find the optimum with a random vector, therefore, 
         it is a random element of the polytope. We need to add a Break because sometimes a solution 
@@ -174,7 +174,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
     
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
         
-       {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim];
+       Quiet[ Check[ {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim]; ,Break[]]];
        
         (*Linear Programming to find a solution. We find the optimum with a random vector, therefore, 
         it is a random element of the polytope. We need to add a Break because sometimes a solution 
@@ -222,6 +222,8 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
   
   (*At the end print the maximum value obtained.*)
   Print["Max{Van Trees} = ",Max[maximalist]];
+    
+  {MeanPhotonNumb,Max[maximalist]} >>> "./ExtremalCoherent-redo.dat";
   ,
   "DispTherGaussian",
 (* Initialize lists {{{*)
