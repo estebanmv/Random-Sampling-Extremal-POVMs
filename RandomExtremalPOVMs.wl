@@ -435,9 +435,9 @@ Timing[Do[VT = {};
       unPOVM = Table[POVMcc[Outcomedim,H][[g]], {g, 1, Outcomedim}];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
        
-           AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+  (*         AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
       
-  (*     AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];*)
+      AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];
       
       (*{{{ 
       While[prob < 1.,
@@ -488,7 +488,7 @@ Timing[Do[VT = {};
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-(*   {EtaAngle,Max[maximalist]} >>> "./QubitCC-VT1000Int.dat";*) 
+   {EtaAngle,Max[maximalist]} >>> "./QubitCCtiempos-FishInt.dat"; 
   (*}}}*)
     ,
   _,
