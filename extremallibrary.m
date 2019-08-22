@@ -227,9 +227,17 @@ PderivDilatedQubit[ThetaAngle_, Iterator_, EtaAngle_, RandVDM_,unPOVM_] := Modul
 FisherDilatedQubit[ThetaAngle_, EtaAngle_,RandVDM_,unPOVM_] := Sum[((PderivDilatedQubit[ThetaAngle, Iterator, EtaAngle,RandVDM,unPOVM])^2)/Tr[DilatedQubit[EtaAngle, ThetaAngle,RandVDM].unPOVM[[Iterator]]], {Iterator, 1, 4}];
 
 UnitaryProjectors[Iterator_,G_] := TensorProduct[G[[All, Iterator]],Conjugate[G][[All, Iterator]]];
-POVMcc[Outcomedim_, H_] := Do[Module[{k}, CCPOVM = {};
+POVMcc[Outcomedim_, HilbertDim_, H_] := Do[Module[{k}, CCPOVM = {};
     For[k = 1, k <= Outcomedim, k++,
-     Q = {{H[[k, 1]], H[[k, 5]]}, {H[[k + 4, 1]], H[[k + 4, 5]]}};
+    Q = {};
+        For[i=1, i <=HilbertDim, i++,
+    rows = {};
+            For[j=1, j<=HilbertDim, j++,
+                AppendTo[rows, H[[k + (i-1)*Outcomedim, (j-1)*Outcomedim+1]]]
+];
+    AppendTo[Q,rows];
+    (* Q = {{H[[k, 1]], H[[k, 5]]}, {H[[k + 4, 1]], H[[k + 4, 5]]}};*)
+];
      AppendTo[CCPOVM, ConjugateTranspose[Q].Q];
      ];
     ];
