@@ -15,14 +15,13 @@
 #		./RandomExtremalPOVMs.wl -o DispTherGaussian -s 200 -hD 7 -od 10 -n $$alpha_square ; \
 #	done;
 
-#data_fig_2a_pre ::
+data_fig_2a_pre ::
+	for alpha in $$(seq 0.1 0.17272 2); do \
+		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
+  		echo alpha $$alpha " ";\
+		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -hD 7 -od 10 -mix 1 -n $$alpha_square ; \
+	done;
 #	for alpha in $$(seq 0.1 0.14444 1.4); do \
-#	for alpha in $$(seq 0.1 0.17272 2); do \
-#		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-#  		echo alpha $$alpha " ";\
-#		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -hD 7 -od 10 -mix 1 -n $$alpha_square ; \
-#	done;
-#	./RandomExtremalPOVMs.wl -o QubitNaimark -h 1.578 -s 1000;\
 
 #data_fig_2a_pre ::
 #	for alpha in $$(seq 0.1 0.17272 2); do \
