@@ -1,5 +1,5 @@
-#!/home/estebanmv/Software/Mathematica/Executables/wolframscript -script
-(*#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script*)
+#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
+(*#!/home/estebanmv/Software/Mathematica/Executables/wolframscript -script*)
 (*#!/usr/bin/env wolframscript*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
