@@ -1,12 +1,12 @@
 
 # This takes about 3 minutes in my laptop
 
-#data_fig_1b ::
-#	for alpha in $$(seq 0 0.24166 3.141592); do \
-#		echo alpha " ";\
-#		./RandomExtremalPOVMs.wl -o Qubit -h $$alpha -s 10;\
-#	done;
-#	./RandomExtremalPOVMs.wl -o Qubit -h 1.578 -s 10;\
+data_fig_1b ::
+	for alpha in $$(seq 1 500 5001); do \
+		echo alpha " ";\
+		./RandomExtremalPOVMs.wl -o Qubit -h 1.578 -s $$alpha;\
+	done;
+#	./RandomExtremalPOVMs.wl -o QubitCC -h 1.578 -s 1000;\
 
 #data_fig_2a_pre ::
 #	for alpha in $$(seq 0.1 0.17272 2); do \

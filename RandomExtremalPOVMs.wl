@@ -372,11 +372,11 @@ Timing[Do[VT = {};
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]] (*>>> "./tiemposQubitRSM.dat";*)
+       Samplings}];][[1]] >>> "./tiemposQubitRSMErrtimes.dat";
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./Qubit-VT10ExtCC.dat"; 
+   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimes.dat"; 
   (*}}}*)
     ,
   "QubitNaimark",
@@ -413,12 +413,12 @@ Timing[Do[VT = {};
       
          
         AppendTo[maximalist, VanTrees];
-      , {\[Kappa], Samplings}];][[1]] (*>>> "./tiemposQubitRSM.dat";*)
+      , {\[Kappa], Samplings}];][[1]] >>> "./tiemposQubitRSMNeymartimes.dat";
   (*}}}*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./QubitNaimark-testsVT1000.dat"; 
+   {Samplings,Max[maximalist]} >>> "./QubitNaimark-VTErrtimes.dat"; 
     ,
   "QubitCC",
 (* Initialize lists {{{*)
@@ -437,12 +437,13 @@ Timing[Do[VT = {};
       Sol = {};
       VanTrees = 0;
       H = CUEMember[Outcomedim*(HilbertDim)];
-      unPOVM = Table[POVMcc[Outcomedim,H][[g]], {g, 1, Outcomedim}];
+      (*unPOVM = Table[POVMcc[Outcomedim,H][[g]], {g, 1, Outcomedim}];*)
+      unPOVM = POVMcc[Outcomedim, HilbertDim, H];
       (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
        
-  (*         AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
+           AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
       
-      AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];
+   (*   AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];*)
       
       (*{{{ 
       While[prob < 1.,
@@ -493,7 +494,7 @@ Timing[Do[VT = {};
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./QubitCCtiempos-FishInt.dat"; 
+   {EtaAngle,Max[maximalist]} >>> "./Qubit-VT1000IntCC.dat"; 
   (*}}}*)
     ,
   _,
