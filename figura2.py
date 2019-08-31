@@ -16,7 +16,7 @@ df.columns=['x','y']
 
 plt.figure(figsize= (2.5,2))
 #plt.figure(figsize=(8,8))
-plt.plot(np.sqrt(Dprueba.x),Dprueba.y,'ro', markersize=2)
+plt.plot(np.sqrt(Dprueba.x[:9]),Dprueba.y[:9],'ro', markersize=2)
 plt.plot(np.sqrt(df.x[:29]),df.y[:29],'b-',linewidth=0.7)
 #plt.tick_params(labelsize=7,width=0.5)
 plt.tick_params(labelsize=5,width=0.5)
