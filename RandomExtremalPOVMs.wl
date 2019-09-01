@@ -1,6 +1,6 @@
-#!/home/estebanmv/Software/Mathematica/Executables/wolframscript -script
+#!/usr/bin/env wolframscript
+(*#!/home/estebanmv/Software/Mathematica/Executables/wolframscript -script*)
 (*#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script*)
-(*#!/usr/bin/env wolframscript*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
@@ -323,10 +323,11 @@ Timing[Do[VT = {};
 
 (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
        
-       (*    AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
+           AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
       
   (*     AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]]; *)
       
+      (*{{{ 
       While[prob < 1.,
         
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
@@ -364,19 +365,18 @@ Timing[Do[VT = {};
          VanTrees = Max[VT];]; 
          ]; 
        
-      (*{{{ 
+      }}}*) 
         If[Max[VT] > VanTrees, Optimal = Extremal; 
          VanTrees = Max[VT];]; 
-      }}}*) 
       
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]] >>> "./tiemposQubitRSMErrtimes.dat";
+       Samplings}];][[1]];(* >>> "./tiemposQubitRSMErrtimes.dat";*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimes.dat"; 
+   {EtaAngle,Max[maximalist]} >>> "./Qubit-VT1000IntCCAv.dat"; 
   (*}}}*)
     ,
   "QubitNaimark",
@@ -413,12 +413,12 @@ Timing[Do[VT = {};
       
          
         AppendTo[maximalist, VanTrees];
-      , {\[Kappa], Samplings}];][[1]] >>> "./tiemposQubitRSMNeymartimes.dat";
+      , {\[Kappa], Samplings}];][[1]](* >>> "./tiemposQubitRSMNeymartimes.dat"*);
   (*}}}*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {Samplings,Max[maximalist]} >>> "./QubitNaimark-VTErrtimes.dat"; 
+   {EtaAngle,Max[maximalist]} >>> "./QubitNaimark-VT10Av.dat"; 
     ,
   "QubitCC",
 (* Initialize lists {{{*)
