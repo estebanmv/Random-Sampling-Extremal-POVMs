@@ -8,9 +8,30 @@ data_fig_1b ::
 #		done ; \
 #	done; \
 
-	for beta in $$(seq 1 1 10); do \
-	./RandomExtremalPOVMs.wl -o Qubit -h 1.578 -s 1000;\
-done;
+#	for beta in $$(seq 1 1 10); do \
+#	./RandomExtremalPOVMs.wl -o Qubit -h 1.578 -s 1000;\
+#done;
+
+# Tiempos-Errores Qubit Algoritmo promedios
+	for alpha in 10 30 50 70 100 150 200 500 700; do \
+	echo alpha " "; for beta in $$(seq 1 1 10); do\
+	./RandomExtremalPOVMs.wl -o Qubit -h 1.5707963267948966 -s $$alpha;\
+	done ; \
+	done; \
+
+# Tiempos-Errores Qubit Naimark promedios
+	for alpha in 10 30 50 100 150 200 300 500 700 1000 1300 1500 2000 2500 3000 4000 5000 ; do \
+	echo alpha " "; for beta in $$(seq 1 1 10); do\
+	./RandomExtremalPOVMs.wl -o QubitNaimark -h 1.5707963267948966 -s $$alpha;\
+	done ; \
+	done; \
+
+# Tiempos-Errores Qubit Carlos-Chuang promedios
+	for alpha in 10 30 50 100 150 200 300 500 700 1000 1300 1500 2000 2500 3000 4000 5000 ; do \
+	echo alpha " "; for beta in $$(seq 1 1 10); do\
+	./RandomExtremalPOVMs.wl -o QubitCC -h 1.5707963267948966 -s $$alpha;\
+	done ; \
+	done; \
 
 #data_fig_2a_pre ::
 #	for alpha in $$(seq 0.1 0.17272 2); do \

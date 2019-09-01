@@ -323,11 +323,10 @@ Timing[Do[VT = {};
 
 (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
        
-           AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
+    (*       AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];*)
       
   (*     AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]]; *)
       
-      (*{{{ 
       While[prob < 1.,
         
         (*Decomposition of the original randomly produced POVM into the matrix A.*)
@@ -365,18 +364,18 @@ Timing[Do[VT = {};
          VanTrees = Max[VT];]; 
          ]; 
        
-      }}}*) 
+      (*{{{ 
         If[Max[VT] > VanTrees, Optimal = Extremal; 
-         VanTrees = Max[VT];]; 
-      
+         VanTrees = Max[VT];];  
+      }}}*) 
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]];(* >>> "./tiemposQubitRSMErrtimes.dat";*)
+       Samplings}];][[1]]>>> "./tiemposQubitRSMErrtimesAvrg.dat";
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./Qubit-VT1000IntCCAv.dat"; 
+   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesAvrg.dat"; 
   (*}}}*)
     ,
   "QubitNaimark",
@@ -413,12 +412,12 @@ Timing[Do[VT = {};
       
          
         AppendTo[maximalist, VanTrees];
-      , {\[Kappa], Samplings}];][[1]](* >>> "./tiemposQubitRSMNeymartimes.dat"*);
+      , {\[Kappa], Samplings}];][[1]]>>> "./tiemposQubitRSMNeymartimesAvrg.dat";
   (*}}}*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./QubitNaimark-VT10Av.dat"; 
+   {Samplings,Max[maximalist]} >>> "./QubitNaimark-VTErrtimesAvrg.dat"; 
     ,
   "QubitCC",
 (* Initialize lists {{{*)
@@ -490,11 +489,11 @@ Timing[Do[VT = {};
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]] >>> "./tiemposQubitCC.dat";
+       Samplings}];][[1]] >>> "./tiemposQubitCCAvrg.dat";
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {EtaAngle,Max[maximalist]} >>> "./Qubit-VT1000IntCC.dat"; 
+   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesIntCC.dat"; 
   (*}}}*)
     ,
   _,
