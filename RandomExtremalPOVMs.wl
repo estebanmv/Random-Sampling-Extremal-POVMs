@@ -1,6 +1,6 @@
-#!/usr/bin/env wolframscript
+#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
+(*#!/usr/bin/env wolframscript*)
 (*#!/home/estebanmv/Software/Mathematica/Executables/wolframscript -script*)
-(*#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script*)
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
@@ -371,11 +371,11 @@ Timing[Do[VT = {};
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]]>>> "./tiemposQubitRSMErrtimesAvrg.dat";
+       Samplings}];][[1]]>>> "./tiemposQubitRSMErrtimesAvrg20.dat";
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesAvrg.dat"; 
+   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesAvrg20.dat"; 
   (*}}}*)
     ,
   "QubitNaimark",
