@@ -225,7 +225,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
   (*At the end print the maximum value obtained.*)
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-  {MeanPhotonNumb,Max[maximalist]} >>> "./ExtremalCoherent-redo.dat";
+  {MeanPhotonNumb,Max[maximalist]} >>> "./ExtremalCoherent-dh9.dat";
   ,
   "DispTherGaussian",
 (* Initialize lists {{{*)
@@ -371,11 +371,11 @@ Timing[Do[VT = {};
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]]>>> "./tiemposQubitRSMErrtimesAvrg20.dat";
+       Samplings}];][[1]]>>> "./tiemposQubitRSMErrtimesAvrg30.dat";
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesAvrg20.dat"; 
+   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesAvrg30.dat"; 
   (*}}}*)
     ,
   "QubitNaimark",
@@ -412,12 +412,12 @@ Timing[Do[VT = {};
       
          
         AppendTo[maximalist, VanTrees];
-      , {\[Kappa], Samplings}];][[1]]>>> "./tiemposQubitRSMNeymartimesAvrg.dat";
+      , {\[Kappa], Samplings}];][[1]]>>> "./tiemposQubitRSMNeymartimesAvrg20.dat";
   (*}}}*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {Samplings,Max[maximalist]} >>> "./QubitNaimark-VTErrtimesAvrg.dat"; 
+   {Samplings,Max[maximalist]} >>> "./QubitNaimark-VTErrtimesAvrg20.dat"; 
     ,
   "QubitCC",
 (* Initialize lists {{{*)

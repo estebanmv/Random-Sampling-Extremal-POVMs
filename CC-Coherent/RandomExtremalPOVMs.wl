@@ -225,7 +225,7 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
   (*At the end print the maximum value obtained.*)
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-  {MeanPhotonNumb,Max[maximalist]} >>> "./ExtremalCoherent-redo.dat";
+  {MeanPhotonNumb,Max[maximalist]} >>> "./ExtremalCoherent-redoDH9.dat";
   ,
   "DispTherGaussian",
 (* Initialize lists {{{*)

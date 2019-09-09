@@ -1,7 +1,7 @@
 
 # This takes about 3 minutes in my laptop
 
-data_fig_1b ::
+#data_fig_1b ::
 #	for alpha in $$(seq 0 0.24166 3.141592); do \
 #		echo alpha " "; for beta in $$(seq 1 1 10); do\
 #		./RandomExtremalPOVMs.wl -o Qubit -h $$alpha -s 1000;\
@@ -13,15 +13,15 @@ data_fig_1b ::
 #done;
 
 # Tiempos-Errores Qubit Algoritmo promedios
-	for alpha in 10 30 50 70 100 150 200 500 700; do \
-	echo alpha " "; for beta in $$(seq 1 1 20); do \
-	./RandomExtremalPOVMs.wl -o Qubit -h 1.5707963267948966 -s $$alpha;\
-	done ; \
-	done; \
+#	for alpha in 10 30 50 70 100 150 200 500 700; do \
+#	echo alpha " "; for beta in $$(seq 1 1 30); do \
+#	./RandomExtremalPOVMs.wl -o Qubit -h 1.5707963267948966 -s $$alpha;\
+#	done ; \
+#	done; \
 
 # Tiempos-Errores Qubit Naimark promedios
 #	for alpha in 10 30 50 100 150 200 300 500 700 1000 1300 1500 2000 2500 3000 4000 5000 ; do \
-#	echo alpha " "; for beta in $$(seq 1 1 10); do \
+#	echo alpha " "; for beta in $$(seq 1 1 20); do \
 #	./RandomExtremalPOVMs.wl -o QubitNaimark -h 1.5707963267948966 -s $$alpha;\
 #	done ; \
 #	done; \
@@ -40,13 +40,13 @@ data_fig_1b ::
 #		./RandomExtremalPOVMs.wl -o DispTherGaussian -s 200 -hD 7 -od 10 -n $$alpha_square ; \
 #	done;
 
-#data_fig_2a_pre ::
+data_fig_2a_pre ::
+	for alpha in $$(seq 0.1 0.17272 2); do \
+		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
+  		echo alpha $$alpha " ";\
+		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -hD 9 -od 10 -mix 1 -n $$alpha_square ; \
+	done;
 #	for alpha in $$(seq 0.1 0.14444 1.4); do \
-#	for alpha in $$(seq 0.1 0.17272 2); do \
-#		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
-#  		echo alpha $$alpha " ";\
-#		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -hD 7 -od 10 -mix 1 -n $$alpha_square ; \
-#	done;
 #	./RandomExtremalPOVMs.wl -o QubitNaimark -h 1.578 -s 1000;\
 
 #data_fig_2a_pre ::

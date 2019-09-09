@@ -16,10 +16,10 @@
 #	done;
 
 data_fig_2a_pre ::
-	for alpha in $$(seq 0.1 0.17272 2); do \
+	for alpha in $$(seq 1.09956 0.17272 2); do \
 		alpha_square=$$(echo " ( $$alpha*$$alpha )" | bc -l) ; \
   		echo alpha $$alpha " ";\
-		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -hD 7 -od 10 -mix 1 -n $$alpha_square ; \
+		./RandomExtremalPOVMs.wl -o CohPlusTherGaussian -s 150 -hD 9 -od 10 -mix 1 -n $$alpha_square ; \
 	done;
 #	for alpha in $$(seq 0.1 0.14444 1.4); do \
 
