@@ -1,6 +1,4 @@
-#!/home/estebanmv/Software/Wolfram/Mathematica/12.0/Executables/wolframscript -script
-(*#!/usr/bin/env wolframscript*)
-(*#!/home/estebanmv/Software/Mathematica/Executables/wolframscript -script*)
+#!/usr/bin/env wolframscript
 (* RANDOM SAMPLING OF EXTREMAL POVMS.
 
 This is an implementation of a random sample plus a decomposition into extremal POVMs with an 
@@ -149,6 +147,8 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
   
   (*At the end print the maximum value obtained.*)
   Print["Max{Van Trees} = ",Max[maximalist]];
+  
+  (*{MeanPhotonNumb,Max[maximalist]} >>> "./ResultsCohplusTherGamma.dat" For saving results*);
   ,
   "CohPlusTherGaussian",
 (* Initialize lists {{{*)
@@ -218,14 +218,14 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
       PrintTemporary[\[Kappa]];
   
   , {\[Kappa], 
-       Samplings}];][[1]] (*>>> "./tiemposCoherentplusthermalExtremales.dat";*) (*For checking the computation times.*)
+       Samplings}];][[1]]; (*>>> "./tiemposCoherentplusthermalExtremales.dat";*) (*For checking the computation times.*)
    
   (*}}}*)
   
   (*At the end print the maximum value obtained.*)
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-  {MeanPhotonNumb,Max[maximalist]} >>> "./ExtremalCoherent-dh9.dat";
+  (*{MeanPhotonNumb,Max[maximalist]} >>> "./ResultsCohplusTherGaussian.dat" For saving results*);
   ,
   "DispTherGaussian",
 (* Initialize lists {{{*)
@@ -294,12 +294,12 @@ FieldFrequency = (kBoltzmann/hBar)*Log[Abs[ComplexCoherent]^(-2) + 1]*Temperatur
       PrintTemporary[\[Kappa],"  ",Max[maximalist]];
   
   , {\[Kappa], 
-       Samplings}];][[1]] (*>>> "./tiemposCoherentplusthermalExtremales.dat";*) (*For checking the computation times.*)
+       Samplings}];][[1]] (*>>> "./tiemposDispTherGaussian.dat";*) (*For checking the computation times.*)
   (*}}}*)
   
     Print["For Complex^2 = ",MeanPhotonNumb,"Max{Van Trees} = ",Max[maximalist]];
 
-    {MeanPhotonNumb,Max[maximalist]} >>> "./DisplacedThermalSqrt-redo.dat";
+    (* {MeanPhotonNumb,Max[maximalist]} >>> "./ResultsDispTherGaussian.dat"; To save results*)
   ,
   "Qubit",
 (* Initialize lists {{{*)
@@ -371,12 +371,12 @@ Timing[Do[VT = {};
          
         AppendTo[maximalist, VanTrees];
       , {\[Kappa], 
-       Samplings}];][[1]]>>> "./tiemposQubitRSMErrtimesAvrg30.dat";
-  
-  Print["Max{Van Trees} = ",Max[maximalist]];
-    
-   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesAvrg30.dat"; 
+       Samplings}];][[1]](*>>> "./tiemposQubit.dat" To save computational time.*);
   (*}}}*)
+  
+Print["Max{Van Trees} = ",Max[maximalist]];
+    
+   {Samplings,Max[maximalist]}(* >>> "./ResultsQubit.dat" To save results.*); 
     ,
   "QubitNaimark",
 (* Initialize lists {{{*)
@@ -389,7 +389,7 @@ HilbertDim = 2;
 Outcomedim = 4;
 (*Quiet[Infinity::indet];*)
 (*}}}*) 
-(*{{{*)   
+(*{{{*)  
 Timing[Do[VT = {};
       prob = 0;
       Sol = {};
@@ -401,9 +401,6 @@ Timing[Do[VT = {};
        unPOVM = Table[UnitaryProjectors[g,G], {g, 1, Outcomedim}];
       
     (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-       (*Print[QBDM[\[Pi]/2,\[Pi]/2]] 
-           Print[DilatedQubit[\[Pi]/2, \[Pi],RandVDM]]*) 
-       (*Print[unPOVM]*)
     (*AppendTo[VT,Chop[FisherDilatedQubit[\[Pi]/2,EtaAngle,RandVDM,unPOVM] ]];*)
      AppendTo[VT,Chop[NIntegrate[(FisherDilatedQubit[ThetaAngle,EtaAngle,RandVDM,unPOVM])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
        
@@ -412,89 +409,12 @@ Timing[Do[VT = {};
       
          
         AppendTo[maximalist, VanTrees];
-      , {\[Kappa], Samplings}];][[1]]>>> "./tiemposQubitRSMNeymartimesAvrg20.dat";
+      , {\[Kappa], Samplings}];][[1]](*>>> "./tiemposQubitNaimark.dat" To save computational times.*);
   (*}}}*)
   
   Print["Max{Van Trees} = ",Max[maximalist]];
     
-   {Samplings,Max[maximalist]} >>> "./QubitNaimark-VTErrtimesAvrg20.dat"; 
-    ,
-  "QubitCC",
-(* Initialize lists {{{*)
-vanmuchos = {};
-maximalist = {};
-ListaCocientes = {};
-Optimal = {};
-(*Here, the Dimensions have to be fixed. *)
-HilbertDim = 2;
-Outcomedim = 4;
-(*Quiet[Infinity::indet];*)
-(*}}}*) 
-(*{{{*)   
-Timing[Do[VT = {};
-      prob = 0;
-      Sol = {};
-      VanTrees = 0;
-      H = CUEMember[Outcomedim*(HilbertDim)];
-      (*unPOVM = Table[POVMcc[Outcomedim,H][[g]], {g, 1, Outcomedim}];*)
-      unPOVM = POVMcc[Outcomedim, HilbertDim, H];
-      (*The algorithm runs until the probability of obtaining the current solution is almost 1.*)
-       
-           AppendTo[VT,Chop[NIntegrate[(FisherQubit[unPOVM,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
-      
-   (*   AppendTo[VT,Chop[FisherQubit[unPOVM,\[Pi]/2,EtaAngle]]];*)
-      
-      (*{{{ 
-      While[prob < 1.,
-        
-        (*Decomposition of the original randomly produced POVM into the matrix A.*)
-       
-       Quiet[ Check[ {A,b} = AConstruction[unPOVM,HilbertDim,Outcomedim]; ,Break[]]];
-
-        (*Linear Programming to find a solution. We find the optimum with a random vector, therefore, 
-        it is a random element of the polytope. We need to add a Break because sometimes a solution 
-        cannot be found.*)
-        
-       Quiet[ Check[ Sol = LinearProg[A,b]; ,Break[]]];
-        
-        (*With the result of the Linear Program we construct the extremal POVM.*)
-       
-       Extremal = BuildExtremal[Sol,unPOVM];
-        
-        (*We calculate the constant probability p.*)
-
-       {prob,avector} = CalculateP[Sol,unPOVM];
-
-        (*We construct the auxiliar POVM and recall it unPOVM.*)
-        
-       otroPOVM = AuxiliarSol[prob, avector, Sol, unPOVM]; 
-
-        unPOVM = otroPOVM;
-        
-        (*We calculate the Van Trees Information with the POVM found in this iteration.*)
-
-       AppendTo[VT,Chop[NIntegrate[(FisherQubit[Extremal,ThetaAngle,EtaAngle])/(2\[Pi]),{ThetaAngle,0,2\[Pi]}]]];
-       (*AppendTo[VT,Chop[FisherQubit[Extremal,\[Pi]/2,EtaAngle]]];*)
-        
-        ranks = Table[
-          MatrixRank[Extremal[[m]]], {m, 1, Length[Extremal]}]; 
-        If[Max[VT] > VanTrees, Optimal = Extremal; 
-         VanTrees = Max[VT];]; 
-         ]; 
-      }}}*) 
-       
-        If[Max[VT] > VanTrees, Optimal = Extremal; 
-         VanTrees = Max[VT];]; 
-      
-         
-        AppendTo[maximalist, VanTrees];
-      , {\[Kappa], 
-       Samplings}];][[1]] >>> "./tiemposQubitCCAvrg.dat";
-  
-  Print["Max{Van Trees} = ",Max[maximalist]];
-    
-   {Samplings,Max[maximalist]} >>> "./Qubit-VTErrtimesIntCC.dat"; 
-  (*}}}*)
+  (*{Samplings,Max[maximalist]} >>> "./ResultsQubitNaimark.dat"; To save results.*) 
     ,
   _,
     Print["Option \"", option, "\" not found"]
